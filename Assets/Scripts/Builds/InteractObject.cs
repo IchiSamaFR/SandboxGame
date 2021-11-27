@@ -11,6 +11,7 @@ public class InteractObject : MonoBehaviour
     public int PosZ;
 
     public int WorldPosX { get => ParentChunk.PosX * ParentChunk.Width + PosX; }
+    public int WorldPosY { get => PosY; }
     public int WorldPosZ { get => ParentChunk.PosZ * ParentChunk.Length + PosZ; }
 
     [Header("Informations")]
@@ -54,10 +55,19 @@ public class InteractObject : MonoBehaviour
         tempObj = ParentChunk.GetInteractObject(PosX - 1, PosY, PosZ);
         if (tempObj != null)
             around.Add(tempObj);
+
         tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ + 1);
         if (tempObj != null)
             around.Add(tempObj);
         tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ - 1);
+        if (tempObj != null)
+            around.Add(tempObj);
+
+
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY + 1, PosZ);
+        if (tempObj != null)
+            around.Add(tempObj);
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY - 1, PosZ);
         if (tempObj != null)
             around.Add(tempObj);
 

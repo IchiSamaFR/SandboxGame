@@ -17,7 +17,6 @@ public class Chunk : MonoBehaviour
     public int PosZ;
 
     [Header("Other")]
-    public GameObject InteractObjectsPref;
     public InteractObject[,,] InteractObjects;
     public float[,] NoiseMap;
 
@@ -42,19 +41,34 @@ public class Chunk : MonoBehaviour
 
     void Gen()
     {
-        float[,] vec = map.GetNoiseChunk(PosX, PosZ);
-        
+        NoiseMap = map.GetNoiseChunk(PosX, PosZ);
+
         for (int x = 0; x < Width; x++)
         {
             for (int z = 0; z < Length; z++)
             {
-                if (vec[x, z] < 0.08f && x - 1 != Width && z - 1 != Length) continue;
-                GameObject obj = Instantiate(InteractObjectsPref, transform);
+                // 0.08f is the maximum darkest accepted
+                if (NoiseMap[x, z] < 0.08f || x - 1 == Width || z - 1 == Length) continue;
+
+                int height = (int)Mathf.Clamp((NoiseMap[x, z] * Height), 0, Height);
+                for (int y = 0; y <= height; y++)
+                {
+                    GameObject obj;
+                    if (y == height)
+                        obj = Instantiate(BuildingCollection.instance.GetBuild("grass").prefab, transform);
+                    else
+                        obj = Instantiate(BuildingCollection.instance.GetBuild("dirt").prefab, transform);
+                    InteractObject interact = obj.GetComponent<InteractObject>();
+                    AddInteractObject(x, y, z, interact);
+                }
+
+                /*
                 Tile _tile = obj.GetComponent<Tile>();
                 _tile.Set(this, x, 0, z);
                 _tile.SetColor(1 - vec[x, z]);
                 _tile.name = "Tile[" + x + ";" + z + "]";
                 InteractObjects[x, 0, z] = _tile;
+                */
             }
         }
     }
@@ -91,7 +105,7 @@ public class Chunk : MonoBehaviour
     {
         if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(y, 0, Height) || !MathT.IntBetween(z, 0, Length))
         {
-            Debug.LogError("AvailableSpace() - Check position out of area.");
+            //Debug.LogError("AvailableSpace() - Check position out of area.");
             return false;
         }
 
@@ -105,8 +119,12 @@ public class Chunk : MonoBehaviour
     public bool AddInteractObject(int x, int y, int z, InteractObject interactObject)
     {
         if (!AvailableSpace(x, y, z)) return false;
+
         InteractObjects[x, y, z] = interactObject;
+        InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
+        InteractObjects[x, y, z].Set(this, x, y, z);
         InteractObjects[x, y, z].SetAfterInit();
+        InteractObjects[x, y, z].GetComponent<BuildObject>()?.SetColor(1 - NoiseMap[x, z]);
         return true;
     }
     public bool DestroyInteractObject(int x, int y, int z)
@@ -116,7 +134,6 @@ public class Chunk : MonoBehaviour
         InteractObject toDelete = InteractObjects[x, y, z];
         InteractObjects[x, y, z] = null;
         toDelete.Destroy();
-
         return true;
     }
 }

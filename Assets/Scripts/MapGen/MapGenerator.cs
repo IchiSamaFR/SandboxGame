@@ -16,7 +16,7 @@ public class MapGenerator : MonoBehaviour
     public int chunkHeight = 10;
     public int chunkLength = 10;
 
-    public Chunk[,] chunks = new Chunk[10, 10];
+    public Chunk[,] chunks;
 
     public int chunksCount = 0;
     public int newChunkPrice { get => chunksCount * 100; }
@@ -60,6 +60,7 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        chunks = new Chunk[width, length];
         Gen();
     }
     
