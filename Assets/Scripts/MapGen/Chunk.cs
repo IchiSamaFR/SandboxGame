@@ -83,14 +83,13 @@ public class Chunk : MonoBehaviour
     
     public InteractObject GetInteractObject(int x, int y, int z)
     {
+        if (!MathT.IntBetween(y, 0, Height))
+            return null;
         if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(z, 0, Length))
         {
-            return map.GetTileByPos(PosX * Width + x, y, PosZ * Length + z);
+            return map.GetInteractObjectByWorld(PosX * Width + x, y, PosZ * Length + z);
         }
-        else if(!MathT.IntBetween(y, 0, Height))
-        {
-            return null;
-        }
+
         if (x < 0) x += Width;
         if (z < 0) z += Length;
 
@@ -103,10 +102,15 @@ public class Chunk : MonoBehaviour
 
     public bool AvailableSpace(int x, int y, int z)
     {
-        if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(y, 0, Height) || !MathT.IntBetween(z, 0, Length))
-        {
-            //Debug.LogError("AvailableSpace() - Check position out of area.");
+        if (!MathT.IntBetween(y, 0, Height))
             return false;
+        if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(z, 0, Length))
+        {
+            Chunk chunk = map.GetChunkByWorld(PosX * Width + x, PosZ * Length + z);
+            if (chunk)
+                return chunk.AvailableSpace(x >= 0 ? x % Width : x + Width, y, z >= 0 ? z % Length : z + Length);
+            else
+                return false;
         }
 
         if(InteractObjects[x, y, z] == null)
@@ -118,13 +122,27 @@ public class Chunk : MonoBehaviour
 
     public bool AddInteractObject(int x, int y, int z, InteractObject interactObject)
     {
+        //print($"{x} / {y} / {z}    {AvailableSpace(x, y, z)}");
+
         if (!AvailableSpace(x, y, z)) return false;
+
+        if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(z, 0, Length))
+        {
+            Chunk chunk = map.GetChunkByWorld(PosX * Width + x, PosZ * Length + z);
+            if (chunk)
+            {
+                
+                return chunk.AddInteractObject(x >= 0 ? x % Width : x + Width, y, z >= 0 ? z % Length : z + Length, interactObject);
+            }
+            else
+                return false;
+        }
+
 
         InteractObjects[x, y, z] = interactObject;
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
         InteractObjects[x, y, z].Set(this, x, y, z);
         InteractObjects[x, y, z].SetAfterInit();
-        InteractObjects[x, y, z].GetComponent<BuildObject>()?.SetColor(1 - NoiseMap[x, z]);
         return true;
     }
     public bool DestroyInteractObject(int x, int y, int z)

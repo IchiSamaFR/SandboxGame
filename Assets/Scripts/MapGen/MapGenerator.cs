@@ -154,6 +154,14 @@ public class MapGenerator : MonoBehaviour
 
         return chunks[x, z];
     }
+    public Chunk GetChunkByWorld(int x, int z)
+    {
+        int chunkX = Mathf.CeilToInt(x / chunkWidth);
+        int chunkZ = Mathf.CeilToInt(z / chunkLength);
+
+        return GetChunk(chunkX, chunkZ);
+    }
+
     public InteractObject GetInteractObjectByWorld(int x, int y, int z)
     {
         int chunkX = Mathf.CeilToInt(x / chunkWidth);
@@ -164,26 +172,6 @@ public class MapGenerator : MonoBehaviour
         Chunk c = GetChunk(chunkX, chunkZ);
 
         if (c == null) return null;
-        return c.GetInteractObject(posx, y, posz);
-    }
-
-    public Chunk GetChunkByPos(float x, float y)
-    {
-        return chunks[(int)(x / chunkWidth), (int)(y / chunkLength)];
-    }
-    public InteractObject GetTileByPos(float x, int y, float z)
-    {
-        int chunkX = (int)(x / chunkWidth);
-        int chunkZ = (int)(z / chunkLength);
-        int posx = (int)x - chunkX * chunkWidth;
-        int posz = (int)z - chunkZ * chunkLength;
-
-        Chunk c = GetChunk(chunkX, chunkZ);
-        if (c == null)
-        {
-            return null;
-        }
-
         return c.GetInteractObject(posx, y, posz);
     }
 }

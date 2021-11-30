@@ -33,6 +33,19 @@ public class MouseManager : MonoBehaviour
             return null;
         }
     }
+    public static InteractObject GetOverInteract(out RaycastHit hitPoint)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hitPoint, Mathf.Infinity) && !IsPointerOverUIElement())
+        {
+            return hitPoint.transform.GetComponent<InteractObject>();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     public static bool IsPointerOverUIElement()
     {

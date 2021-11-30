@@ -25,6 +25,7 @@ public class BuildObject : InteractObject
     public override void SetAfterInit()
     {
         InitMesh(true);
+        SetColor();
     }
 
     List<BuildObject> GetAroundBuilds()
@@ -50,10 +51,10 @@ public class BuildObject : InteractObject
     }
 
 
-    public void SetColor(float colorMutliplicator)
+    public void SetColor()
     {
-        MaterialColor = BuildingCollection.instance.GetMaterialColor(id) * colorMutliplicator;
-        SetColor(MaterialColor);
+        MaterialColor = BuildingCollection.instance.GetMaterialColor(id) * (1 - PosY * (0.4f / MapGenerator.instance.chunkHeight));
+        GetComponent<MeshRenderer>().material.color = MaterialColor;
     }
     public void SetColor(Color color)
     {
@@ -106,6 +107,10 @@ public class BuildObject : InteractObject
 
         if(nleft != left || nright != right || nforward != forward || nbackward != backward || ndown != down || nup != up)
             SetMesh(nleft, nright, nforward, nbackward, nup, ndown);
+        if (left && right && forward && backward && down && up)
+            GetComponent<Collider>().enabled = false;
+        else
+            GetComponent<Collider>().enabled = true;
     }
     void SetMesh(bool nleft, bool nright, bool nforward, bool nbackward, bool nup, bool ndown)
     {
