@@ -15,4 +15,15 @@ public static class MathT
             return false;
         }
     }
+    public static bool FloatBetween(float value, float a, float b)
+    {
+        if (value >= a && value < b)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
