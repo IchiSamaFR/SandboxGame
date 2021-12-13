@@ -56,11 +56,11 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         instance = this;
+        chunks = new Chunk[width, length];
     }
 
     void Start()
     {
-        chunks = new Chunk[width, length];
         Gen();
     }
     

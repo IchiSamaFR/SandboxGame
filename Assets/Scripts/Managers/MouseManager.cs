@@ -5,8 +5,18 @@ using UnityEngine.EventSystems;
 
 public class MouseManager : MonoBehaviour
 {
+    enum Mode
+    {
+        normal,
+        building
+    }
+
     static int UILayer;
     static int InteractLayer;
+    
+    static Mode MouseMode = Mode.normal;
+    public static bool IsNormalMode { get => MouseMode == Mode.normal; }
+    public static bool IsBuildingMode { get => MouseMode == Mode.building; }
 
     private void Start()
     {
@@ -14,24 +24,59 @@ public class MouseManager : MonoBehaviour
         InteractLayer = LayerMask.NameToLayer("Interact");
     }
 
-    private void Update()
+    public static void SetNormalMouse()
     {
-
+        MouseMode = Mode.normal;
+    }
+    public static void SetBuildingMouse()
+    {
+        MouseMode = Mode.building;
     }
 
-    public static InteractObject GetOverInteract()
+    public static Transform GetOver()
     {
-        RaycastHit hit;
+        RaycastHit hitPoint;
+        return GetOver(out hitPoint);
+
+    }
+    public static Transform GetOver(out RaycastHit hitPoint)
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity) && !IsPointerOverUIElement())
+        if (Physics.Raycast(ray, out hitPoint, Mathf.Infinity) && !IsPointerOverUIElement())
         {
-            return hit.transform.GetComponent<InteractObject>();
+            return hitPoint.transform;
         }
         else
         {
             return null;
         }
+    }
+
+    public static Character GetOverCharacter()
+    {
+        RaycastHit hitPoint;
+        return GetOverCharacter(out hitPoint);
+
+    }
+    public static Character GetOverCharacter(out RaycastHit hitPoint)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hitPoint, Mathf.Infinity) && !IsPointerOverUIElement())
+        {
+            return hitPoint.transform.GetComponent<Character>();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static InteractObject GetOverInteract()
+    {
+        RaycastHit hitPoint;
+        return GetOverInteract(out hitPoint);
     }
     public static InteractObject GetOverInteract(out RaycastHit hitPoint)
     {

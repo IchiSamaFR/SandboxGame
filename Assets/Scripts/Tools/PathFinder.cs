@@ -5,9 +5,7 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     public static PathFinder instance;
-    public Node[,,] Nodes;
-
-    public bool PathFind;
+    Node[,,] Nodes;
 
     public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.chunkWidth; }
     public static int Height { get => MapGenerator.instance.chunkHeight;  }
@@ -16,21 +14,18 @@ public class PathFinder : MonoBehaviour
     public Vector3 StartingNode;
     public Vector3 EndingNode;
 
-    public bool diagonal = true;
-
     private void Awake()
     {
         instance = this;
     }
 
-    private void Update()
-    {
-        //SelectNextNode();
-    }
-
     public List<Node> GetPath(Vector3 start, Vector3 end)
     {
-        PathFind = false;
+        if ((int)start.x == (int)end.x
+           && (int)start.y == (int)end.y
+           && (int)start.z == (int)end.z)
+            return new List<Node>();
+
         Vector3 StartingNode = start;
         Vector3 EndingNode = end;
 
@@ -41,23 +36,23 @@ public class PathFinder : MonoBehaviour
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = new Node(EndingNode, this);
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].IsEndNode = true;
 
-        while (!Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].PathFound)
+        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].Select();
+
+        bool next = true;
+        while (!Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].PathFound && next)
         {
-            SelectNextNode();
+            next = SelectNextNode();
         }
 
         return Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath;
     }
-
     public bool SelectNextNode()
     {
-        if (PathFind) return false;
-
         Node nodeToSelect = null;
         foreach (var node in Nodes)
         {
             if (node == null) continue;
-
+            
             if (!node.isChecked && (nodeToSelect == null || node.Fcost < nodeToSelect.Fcost) && node.Fcost > 0)
             {
                 nodeToSelect = node;
@@ -68,14 +63,9 @@ public class PathFinder : MonoBehaviour
             nodeToSelect.Select();
             return true;
         }
-        else
-        {
-            PathFind = true;
-            return false;
-        }
+        return false;
     }
     
-
     public List<Node> GetNodesAround(Vector3 pos)
     {
         List<Node> nodes = new List<Node>();
@@ -83,84 +73,36 @@ public class PathFinder : MonoBehaviour
         int posx = (int)pos.x;
         int posy = (int)pos.y;
         int posz = (int)pos.z;
-        if (diagonal)
+
+        for (int x = posx - 1; x <= posx + 1; x++)
         {
-            for (int x = posx - 1; x <= posx + 1; x++)
+            for (int z = posz - 1; z <= posz + 1; z++)
             {
-                for (int z = posz - 1; z <= posz + 1; z++)
+                if (x != posx || z != posz)
                 {
-                    if (x != posx || z != posz)
+                    if (GetNode(x, posy, z) != null
+                        && GetNode(x, posy + 1, z) == null)
                     {
-                        if(GetNode(x, posy, z) != null
-                            && GetNode(x, posy + 1, z) == null)
-                        {
-                            nodes.Add(GetNode(x, posy, z));
-                        }
-                        else if(GetNode(x, posy + 1, z) != null
-                            && GetNode(x, posy + 2, z) == null)
-                        {
-                            nodes.Add(GetNode(x, posy + 1, z));
-                        }
+                        nodes.Add(GetNode(x, posy, z));
+                    }
+                    else if (GetNode(x, posy + 1, z) != null
+                        && GetNode(x, posy + 2, z) == null)
+                    {
+                        nodes.Add(GetNode(x, posy + 1, z));
+                    }
+                    else if (GetNode(x, posy - 1, z) != null
+                        && GetNode(x, posy, z) == null)
+                    {
+                        nodes.Add(GetNode(x, posy - 1, z));
                     }
                 }
             }
         }
-        else
-        {
-            if (GetNode(posx + 1, posy, posz) != null
-                && GetNode(posx + 1, posy + 1, posz) == null)
-            {
-                nodes.Add(GetNode(posx + 1, posy, posz));
-            }
-            else if (GetNode(posx + 1, posy + 1, posz) != null
-                && GetNode(posx + 1, posy + 2, posz) == null)
-            {
-                nodes.Add(GetNode(posx + 1, posy + 1, posz));
-                print("More");
-            }
-
-            if (GetNode(posx - 1, posy, posz) != null
-                && GetNode(posx - 1, posy + 1, posz) == null)
-            {
-                nodes.Add(GetNode(posx - 1, posy, posz));
-            }
-            else if (GetNode(posx - 1, posy + 1, posz) != null
-                && GetNode(posx - 1, posy + 2, posz) == null)
-            {
-                nodes.Add(GetNode(posx - 1, posy + 1, posz));
-                print("More");
-            }
-
-            if (GetNode(posx, posy, posz + 1) != null
-                && GetNode(posx, posy + 1, posz + 1) == null)
-            {
-                nodes.Add(GetNode(posx, posy, posz + 1));
-            }
-            else if (GetNode(posx, posy + 1, posz + 1) != null
-                && GetNode(posx, posy + 2, posz + 1) == null)
-            {
-                nodes.Add(GetNode(posx, posy + 1, posz + 1));
-                print("More");
-            }
-
-            if (GetNode(posx, posy, posz - 1) != null
-                && GetNode(posx, posy + 1, posz - 1) == null)
-            {
-                nodes.Add(GetNode(posx, posy, posz - 1));
-            }
-            else if (GetNode(posx, posy + 1, posz - 1) != null
-                && GetNode(posx, posy + 2, posz - 1) == null)
-            {
-                nodes.Add(GetNode(posx, posy + 1, posz - 1));
-                print("More");
-            }
-        }
-
         return nodes;
     }
     public Node GetNode(int x, int y, int z)
     {
-        if (x < 0 || x >= Width || z < 0 || z >= Length) return null;
+        if (x < 0 || x >= Width || z < 0 || z >= Length || y < 0 || y >= Height) return null;
 
         if(Nodes[x, y, z] == null)
         {
@@ -234,8 +176,7 @@ public class Node
 
         if (IsEndNode)
         {
-            Path.PathFind = true;
-            Previous.SetEndPath(this);
+            SetEndPath(this);
             return;
         }
 
@@ -278,7 +219,7 @@ public class Node
             else
                 newGCost = Gcost + 10;
 
-            if (!nodes[i].IsStartNode && (nodes[i].Gcost <= 0 || nodes[i]?.Gcost > newGCost))
+            if (!nodes[i].IsStartNode && (nodes[i].Gcost <= 0 || nodes[i].Gcost > newGCost))
             {
                 nodes[i].Previous = this;
                 nodes[i].SetCost(newGCost, EndNodePos);
