@@ -5,7 +5,6 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     public static PathFinder instance;
-    Node[,,] Nodes;
 
     public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.chunkWidth; }
     public static int Height { get => MapGenerator.instance.chunkHeight;  }
@@ -19,7 +18,7 @@ public class PathFinder : MonoBehaviour
         instance = this;
     }
 
-    public List<Node> GetPath(Vector3 start, Vector3 end)
+    public static List<Node> GetPath(Vector3 start, Vector3 end)
     {
         if ((int)start.x == (int)end.x
            && (int)start.y == (int)end.y
@@ -29,24 +28,24 @@ public class PathFinder : MonoBehaviour
         Vector3 StartingNode = start;
         Vector3 EndingNode = end;
 
-        Nodes = new Node[Width, Height, Length];
-        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = new Node(StartingNode, this);
+        Node[,,] Nodes = new Node[Width, Height, Length];
+        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = new Node(StartingNode);
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].IsStartNode = true;
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].SetCost(0, EndingNode);
-        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = new Node(EndingNode, this);
+        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = new Node(EndingNode);
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].IsEndNode = true;
 
-        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].Select();
+        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].Select(Nodes);
 
         bool next = true;
         while (!Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].PathFound && next)
         {
-            next = SelectNextNode();
+            next = SelectNextNode(Nodes);
         }
 
         return Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath;
     }
-    public bool SelectNextNode()
+    public static bool SelectNextNode(Node[,,] Nodes)
     {
         Node nodeToSelect = null;
         foreach (var node in Nodes)
@@ -60,13 +59,13 @@ public class PathFinder : MonoBehaviour
         }
         if (nodeToSelect != null)
         {
-            nodeToSelect.Select();
+            nodeToSelect.Select(Nodes);
             return true;
         }
         return false;
     }
     
-    public List<Node> GetNodesAround(Vector3 pos)
+    public static List<Node> GetNodesAround(Node[,,] Nodes, Vector3 pos)
     {
         List<Node> nodes = new List<Node>();
 
@@ -80,27 +79,27 @@ public class PathFinder : MonoBehaviour
             {
                 if (x != posx || z != posz)
                 {
-                    if (GetNode(x, posy, z) != null
-                        && GetNode(x, posy + 1, z) == null)
+                    if (GetNode(Nodes, x, posy, z) != null
+                        && GetNode(Nodes, x, posy + 1, z) == null)
                     {
-                        nodes.Add(GetNode(x, posy, z));
+                        nodes.Add(GetNode(Nodes, x, posy, z));
                     }
-                    else if (GetNode(x, posy + 1, z) != null
-                        && GetNode(x, posy + 2, z) == null)
+                    else if (GetNode(Nodes, x, posy + 1, z) != null
+                        && GetNode(Nodes, x, posy + 2, z) == null)
                     {
-                        nodes.Add(GetNode(x, posy + 1, z));
+                        nodes.Add(GetNode(Nodes, x, posy + 1, z));
                     }
-                    else if (GetNode(x, posy - 1, z) != null
-                        && GetNode(x, posy, z) == null)
+                    else if (GetNode(Nodes, x, posy - 1, z) != null
+                        && GetNode(Nodes, x, posy, z) == null)
                     {
-                        nodes.Add(GetNode(x, posy - 1, z));
+                        nodes.Add(GetNode(Nodes, x, posy - 1, z));
                     }
                 }
             }
         }
         return nodes;
     }
-    public Node GetNode(int x, int y, int z)
+    public static Node GetNode(Node[,,] Nodes, int x, int y, int z)
     {
         if (x < 0 || x >= Width || z < 0 || z >= Length || y < 0 || y >= Height) return null;
 
@@ -108,7 +107,7 @@ public class PathFinder : MonoBehaviour
         {
             InteractObject obj = MapGenerator.instance.GetInteractObjectByWorld(x, y, z);
             if (obj != null)
-                Nodes[x, y, z] = new Node(new Vector3(obj.WorldPosX, obj.WorldPosY, obj.WorldPosZ), this);
+                Nodes[x, y, z] = new Node(new Vector3(obj.WorldPosX, obj.WorldPosY, obj.WorldPosZ));
         }
 
         return Nodes[x, y, z];
@@ -117,7 +116,6 @@ public class PathFinder : MonoBehaviour
 
 public class Node
 {
-    public PathFinder Path;
     public List<Node> NodesPath = new List<Node>();
 
     public bool IsEndNode; //Is the ending node
@@ -134,16 +132,15 @@ public class Node
     public int Hcost = 0;
     public int Fcost { get => Gcost + Hcost; }
 
-    public Node(Vector3 pos, PathFinder path)
+    public Node(Vector3 pos)
     {
         Pos = pos;
-        Path = path;
     }
 
-    public void Select()
+    public void Select(Node[,,] Nodes)
     {
         isChecked = true;
-        CheckAround();
+        CheckAround(Nodes);
     }
 
     public void ResetValues()
@@ -207,9 +204,9 @@ public class Node
         Gcost = gcost;
         Hcost = hcost;
     }
-    public void CheckAround()
+    public void CheckAround(Node[,,] Nodes)
     {
-        List<Node> nodes = Path.GetNodesAround(Pos);
+        List<Node> nodes = PathFinder.GetNodesAround(Nodes, Pos);
 
         for (int i = 0; i < nodes.Count; i++)
         {

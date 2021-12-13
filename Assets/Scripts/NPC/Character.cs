@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
 
     void GetPathTo(Vector3 postoGo)
     {
-        Nodes = PathFinder.instance.GetPath(new Vector3(actualPos.x, actualPos.y - 1, actualPos.z), new Vector3(postoGo.x, postoGo.y, postoGo.z));
+        Nodes = PathFinder.GetPath(new Vector3(actualPos.x, actualPos.y - 1, actualPos.z), new Vector3(postoGo.x, postoGo.y, postoGo.z));
         resetLook = true;
     }
     void LookNode()
@@ -73,7 +73,6 @@ public class Character : MonoBehaviour
             Vector3 pos = Nodes[0].Pos;
             transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
             resetLook = false;
-            print("e");
         }
     }
 }
