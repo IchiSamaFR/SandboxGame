@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    List<Node> Nodes = new List<Node>();
+    List<PathFinder.Node> Nodes = new List<PathFinder.Node>();
     private bool resetLook = true;
     public float speed = 2;
     public Vector3 actualPos = new Vector3();
@@ -36,7 +36,9 @@ public class Character : MonoBehaviour
             int multiplier = actualPos.x < nodePos.x ? 1 : -1;
             transform.position += new Vector3(speed * Time.deltaTime, 0, 0) * multiplier;
         }
-        if (actualPos.y != nodePos.y + 1)
+        if (actualPos.y != nodePos.y + 1
+            && MathT.FloatBetween(actualPos.x, nodePos.x - 0.5f, nodePos.x + 0.5f)
+            && MathT.FloatBetween(actualPos.z, nodePos.z - 0.5f, nodePos.z + 0.5f))
         {
             transform.position = new Vector3(actualPos.x, nodePos.y + 1, actualPos.z);
         }

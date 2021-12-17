@@ -93,7 +93,16 @@ public class MapGenerator : MonoBehaviour
                 chunk.Set(chunkWidth, chunkHeight, chunkLength, x, z, this);
             }
         }
+        InitMeshes();
     }
+    public void InitMeshes()
+    {
+        foreach (var item in chunks)
+        {
+            item.InitMeshes();
+        }
+    }
+
     void DestroyChunks()
     {
         Destroy(Content);
@@ -174,6 +183,12 @@ public class MapGenerator : MonoBehaviour
         if (c == null) return null;
         return c.GetInteractObject(posx, y, posz);
     }
+}
+[System.Serializable]
+public class MapGenLevel
+{
+    public float level;
+    public Color color = new Color(1, 1, 1, 1);
 }
 
 [System.Serializable]

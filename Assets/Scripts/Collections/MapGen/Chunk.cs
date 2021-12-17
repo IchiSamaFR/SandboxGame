@@ -48,9 +48,10 @@ public class Chunk : MonoBehaviour
             for (int z = 0; z < Length; z++)
             {
                 // 0.08f is the maximum darkest accepted
-                if (NoiseMap[x, z] < 0.08f || x - 1 == Width || z - 1 == Length) continue;
+                float minimum = 0.08f;
+                if (NoiseMap[x, z] < minimum || x - 1 == Width || z - 1 == Length) continue;
 
-                int height = (int)Mathf.Clamp((NoiseMap[x, z] * Height), 0, Height);
+                int height = (int)Mathf.Clamp(((NoiseMap[x, z] - minimum) * Height), 0, Height);
                 for (int y = 0; y <= height; y++)
                 {
                     GameObject obj;
@@ -59,17 +60,17 @@ public class Chunk : MonoBehaviour
                     else
                         obj = Instantiate(BuildingCollection.instance.GetBuild("dirt").prefab, transform);
                     InteractObject interact = obj.GetComponent<InteractObject>();
-                    AddInteractObject(x, y, z, interact);
+                    AddInitInteractObject(x, y, z, interact);
                 }
-
-                /*
-                Tile _tile = obj.GetComponent<Tile>();
-                _tile.Set(this, x, 0, z);
-                _tile.SetColor(1 - vec[x, z]);
-                _tile.name = "Tile[" + x + ";" + z + "]";
-                InteractObjects[x, 0, z] = _tile;
-                */
             }
+        }
+    }
+    public void InitMeshes()
+    {
+        foreach (var item in InteractObjects)
+        {
+            item?.GetComponent<BuildObject>()?.InitMesh(false);
+            item?.GetComponent<BuildObject>()?.SetColor();
         }
     }
 
@@ -122,8 +123,6 @@ public class Chunk : MonoBehaviour
 
     public bool AddInteractObject(int x, int y, int z, InteractObject interactObject)
     {
-        //print($"{x} / {y} / {z}    {AvailableSpace(x, y, z)}");
-
         if (!AvailableSpace(x, y, z)) return false;
 
         if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(z, 0, Length))
@@ -131,7 +130,6 @@ public class Chunk : MonoBehaviour
             Chunk chunk = map.GetChunkByWorld(PosX * Width + x, PosZ * Length + z);
             if (chunk)
             {
-                
                 return chunk.AddInteractObject(x >= 0 ? x % Width : x + Width, y, z >= 0 ? z % Length : z + Length, interactObject);
             }
             else
@@ -143,6 +141,22 @@ public class Chunk : MonoBehaviour
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
         InteractObjects[x, y, z].Set(this, x, y, z);
         InteractObjects[x, y, z].SetAfterInit();
+        return true;
+    }
+    public bool AddInitInteractObject(int x, int y, int z, InteractObject interactObject)
+    {
+        if (!AvailableSpace(x, y, z)) return false;
+
+        if (!MathT.IntBetween(x, 0, Width) || !MathT.IntBetween(z, 0, Length))
+        {
+            Debug.LogWarning("AddInitInteract out of size.");
+            return false;
+        }
+
+
+        InteractObjects[x, y, z] = interactObject;
+        InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
+        InteractObjects[x, y, z].Set(this, x, y, z);
         return true;
     }
     public bool DestroyInteractObject(int x, int y, int z)

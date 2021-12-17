@@ -4,15 +4,124 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
+    public class Node
+    {
+        public List<Node> NodesPath = new List<Node>();
+
+        public bool IsEndNode; //Is the ending node
+        public bool IsStartNode; //Is the start node
+        public bool PathFound;
+
+        public bool isChecked;
+
+        public Node Previous;
+        public Vector3 Pos;
+        public Vector3 EndNodePos;
+
+        public int Gcost = 0;
+        public int Hcost = 0;
+        public int Fcost { get => Gcost + Hcost; }
+
+        public Node(Vector3 pos)
+        {
+            Pos = pos;
+        }
+
+        public void Select(Node[,,] Nodes)
+        {
+            isChecked = true;
+            CheckAround(Nodes);
+        }
+
+        public void ResetValues()
+        {
+            Gcost = 0;
+            Hcost = 0;
+            isChecked = false;
+            PathFound = false;
+        }
+
+        public void SetEndPath(Node node, List<Node> path = null)
+        {
+            PathFound = true;
+            InteractObject obj = MapGenerator.instance.GetInteractObjectByWorld((int)Pos.x, (int)Pos.y, (int)Pos.z);
+
+            NodesPath.Add(node);
+            if (path != null)
+                NodesPath.AddRange(path);
+
+            if (Previous != null)
+            {
+                Previous.SetEndPath(this, NodesPath);
+            }
+        }
+
+        public void SetCost(int gcost, Vector3 end)
+        {
+            Gcost = gcost;
+            EndNodePos = end;
+
+            if (IsEndNode)
+            {
+                SetEndPath(this);
+                return;
+            }
+
+            Hcost = SumHcost(end);
+        }
+
+        public int SumHcost(Vector3 end)
+        {
+            int x = (int)(end.x - Pos.x >= 0 ? end.x - Pos.x : Pos.x - end.x);
+            int z = (int)(end.z - Pos.z >= 0 ? end.z - Pos.z : Pos.z - end.z);
+
+            int val = 0;
+            if (x - z >= 0)
+            {
+                val += x * 10;
+                val += (x - (x - z)) * 4;
+            }
+            else
+            {
+                val += z * 10;
+                val += (z - (z - x)) * 4;
+            }
+            return val;
+        }
+
+        public void SetCost(int gcost, int hcost)
+        {
+            Gcost = gcost;
+            Hcost = hcost;
+        }
+        public void CheckAround(Node[,,] Nodes)
+        {
+            List<Node> nodes = PathFinder.GetNodesAround(Nodes, Pos);
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                int newGCost = 0;
+                if (nodes[i].Pos.x != Pos.x && nodes[i].Pos.y != Pos.y)
+                    newGCost = Gcost + 14;
+                else
+                    newGCost = Gcost + 10;
+
+                if (!nodes[i].IsStartNode && (nodes[i].Gcost <= 0 || nodes[i].Gcost > newGCost))
+                {
+                    nodes[i].Previous = this;
+                    nodes[i].SetCost(newGCost, EndNodePos);
+                    if (nodes[i].PathFound) break;
+                }
+            }
+        }
+    }
+
     public static PathFinder instance;
 
     public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.chunkWidth; }
     public static int Height { get => MapGenerator.instance.chunkHeight;  }
     public static int Length { get => MapGenerator.instance.length * MapGenerator.instance.chunkLength; }
-
-    public Vector3 StartingNode;
-    public Vector3 EndingNode;
-
+    
     private void Awake()
     {
         instance = this;
@@ -111,117 +220,5 @@ public class PathFinder : MonoBehaviour
         }
 
         return Nodes[x, y, z];
-    }
-}
-
-public class Node
-{
-    public List<Node> NodesPath = new List<Node>();
-
-    public bool IsEndNode; //Is the ending node
-    public bool IsStartNode; //Is the start node
-    public bool PathFound;
-
-    public bool isChecked;
-
-    public Node Previous;
-    public Vector3 Pos;
-    public Vector3 EndNodePos;
-
-    public int Gcost = 0;
-    public int Hcost = 0;
-    public int Fcost { get => Gcost + Hcost; }
-
-    public Node(Vector3 pos)
-    {
-        Pos = pos;
-    }
-
-    public void Select(Node[,,] Nodes)
-    {
-        isChecked = true;
-        CheckAround(Nodes);
-    }
-
-    public void ResetValues()
-    {
-        Gcost = 0;
-        Hcost = 0;
-        isChecked = false;
-        PathFound = false;
-    }
-
-    public void SetEndPath(Node node, List<Node> path = null)
-    {
-        PathFound = true;
-        InteractObject obj = MapGenerator.instance.GetInteractObjectByWorld((int)Pos.x, (int)Pos.y, (int)Pos.z);
-
-        NodesPath.Add(node);
-        if(path != null)
-            NodesPath.AddRange(path);
-
-        if (Previous != null)
-        {
-            Previous.SetEndPath(this, NodesPath);
-        }
-    }
-
-    public void SetCost(int gcost, Vector3 end)
-    {
-        Gcost = gcost;
-        EndNodePos = end;
-
-        if (IsEndNode)
-        {
-            SetEndPath(this);
-            return;
-        }
-
-        Hcost = SumHcost(end);
-    }
-
-    public int SumHcost(Vector3 end)
-    {
-        int x = (int)(end.x - Pos.x >= 0 ? end.x - Pos.x : Pos.x - end.x);
-        int z = (int)(end.z - Pos.z >= 0 ? end.z - Pos.z : Pos.z - end.z);
-
-        int val = 0;
-        if (x -z >= 0)
-        {
-            val += x * 10;
-            val += (x - (x - z)) * 4;
-        }
-        else
-        {
-            val += z * 10;
-            val += (z - (z - x)) * 4;
-        }
-        return val;
-    }
-
-    public void SetCost(int gcost, int hcost)
-    {
-        Gcost = gcost;
-        Hcost = hcost;
-    }
-    public void CheckAround(Node[,,] Nodes)
-    {
-        List<Node> nodes = PathFinder.GetNodesAround(Nodes, Pos);
-
-        for (int i = 0; i < nodes.Count; i++)
-        {
-            int newGCost = 0;
-            if (nodes[i].Pos.x != Pos.x && nodes[i].Pos.y != Pos.y)
-                newGCost = Gcost + 14;
-            else
-                newGCost = Gcost + 10;
-
-            if (!nodes[i].IsStartNode && (nodes[i].Gcost <= 0 || nodes[i].Gcost > newGCost))
-            {
-                nodes[i].Previous = this;
-                nodes[i].SetCost(newGCost, EndNodePos);
-                if (nodes[i].PathFound) break;
-            }
-        }
     }
 }

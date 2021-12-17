@@ -45,9 +45,11 @@ public class BuildObject : InteractObject
         CalculateMesh();
         BuildMesh();
 
-        List<BuildObject> builds = GetAroundBuilds();
         if (refresh)
+        {
+            List<BuildObject> builds = GetAroundBuilds();
             for (int i = 0; i < builds.Count; i++) builds[i].InitMesh();
+        }
     }
 
 
@@ -126,6 +128,15 @@ public class BuildObject : InteractObject
         triangles.Clear();
         uvs.Clear();
         normales.Clear();
+
+        if(left && right && forward && backward && up && down)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<BoxCollider>().enabled = false;
+            return;
+        }
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
 
         /* Triangles start with 3 :
          * 0 - 1  |  0   1
