@@ -14,7 +14,7 @@ public class MouseManager : MonoBehaviour
     public static LayerMask UILayer = 5;
     public static LayerMask InteractLayer = 8;
     
-    static Mode MouseMode = Mode.normal;
+    static Mode MouseMode = Mode.building;
     public static bool IsNormalMode { get => MouseMode == Mode.normal; }
     public static bool IsBuildingMode { get => MouseMode == Mode.building; }
 

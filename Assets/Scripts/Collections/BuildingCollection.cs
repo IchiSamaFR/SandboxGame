@@ -9,19 +9,13 @@ public class BuildingCollection : MonoBehaviour
     {
         public string id;
         public string name;
-        public BuildType type;
         public GameObject prefab;
         public Material Material;
     }
 
-    public enum BuildType
-    {
-        wall,
-        floor
-    }
-
     public static BuildingCollection instance;
-    public List<BuildPrefab> buildPrefabs = new List<BuildPrefab>();
+    public List<BuildPrefab> buildBlocks = new List<BuildPrefab>();
+    public List<BuildPrefab> buildStructs = new List<BuildPrefab>();
 
     private void Awake()
     {
@@ -30,31 +24,35 @@ public class BuildingCollection : MonoBehaviour
     
     public BuildPrefab GetBuild(string id)
     {
-        for (int i = 0; i < buildPrefabs.Count; i++)
+        for (int i = 0; i < buildBlocks.Count; i++)
         {
-            if (buildPrefabs[i].id == id) return buildPrefabs[i];
+            if (buildBlocks[i].id.ToLower() == id.ToLower()) return buildBlocks[i];
+        }
+        for (int i = 0; i < buildStructs.Count; i++)
+        {
+            if (buildStructs[i].id.ToLower() == id.ToLower()) return buildStructs[i];
         }
         return null;
     }
     
     public Color GetMaterialColor(string id)
     {
-        for (int i = 0; i < buildPrefabs.Count; i++)
+        for (int i = 0; i < buildBlocks.Count; i++)
         {
-            if (buildPrefabs[i].id == id)
+            if (buildBlocks[i].id == id)
             {
-                return buildPrefabs[i].Material.color;
+                return buildBlocks[i].Material.color;
             }
         }
         return new Color();
     }
     public Material GetMaterial(string id)
     {
-        for (int i = 0; i < buildPrefabs.Count; i++)
+        for (int i = 0; i < buildBlocks.Count; i++)
         {
-            if (buildPrefabs[i].id == id)
+            if (buildBlocks[i].id == id)
             {
-                return buildPrefabs[i].Material;
+                return buildBlocks[i].Material;
             }
         }
         return new Material(Shader.Find("Standard"));

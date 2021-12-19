@@ -45,10 +45,36 @@ public class InteractObject : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public List<InteractObject> GetAroundInteract()
+    public virtual List<InteractObject> GetAroundInteract()
     {
         List<InteractObject> around = new List<InteractObject>();
         InteractObject tempObj;
+
+        for (int x = PosX - 1; x <= PosX + 1; x++)
+        {
+            for (int z = PosZ - 1; z <= PosZ + 1; z++)
+            {
+                if (x != PosX || z != PosZ)
+                {
+                    InteractObject newInteract;
+                    if ((newInteract = ParentChunk.GetInteractObject(x, PosY, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY + 1, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY + 1, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY + 2, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY - 1, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                }
+            }
+        }
         tempObj = ParentChunk.GetInteractObject(PosX + 1, PosY, PosZ);
         if (tempObj != null)
             around.Add(tempObj);
@@ -70,6 +96,38 @@ public class InteractObject : MonoBehaviour
         tempObj = ParentChunk.GetInteractObject(PosX, PosY - 1, PosZ);
         if (tempObj != null)
             around.Add(tempObj);
+
+        return around;
+    }
+    public List<InteractObject> GetAroundInteract(int range = 1)
+    {
+        List<InteractObject> around = new List<InteractObject>();
+
+        InteractObject newInteract;
+        for (int x = PosX - range; x <= PosX + range; x++)
+        {
+            for (int z = PosZ - range; z <= PosZ + range; z++)
+            {
+                if (x != PosX || z != PosZ)
+                {
+                    if ((newInteract = ParentChunk.GetInteractObject(x, PosY, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY + 1, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY + 1, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY + 2, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY - 1, z)) != null
+                        && ParentChunk.GetInteractObject(x, PosY, z) == null)
+                    {
+                        around.Add(newInteract);
+                    }
+                }
+            }
+        }
 
         return around;
     }

@@ -23,6 +23,7 @@ public class BuildingManager : MonoBehaviour
 
         RaycastHit hit;
         InteractObject interactObject = MouseManager.GetOverInteract(out hit);
+        string build = "firecamp";
 
         if (!interactObject)
         {
@@ -32,8 +33,10 @@ public class BuildingManager : MonoBehaviour
 
         if (!Preview)
         {
-            Preview = Instantiate(buildingCollection.GetBuild("grass").prefab, transform);
-            Preview.GetComponent<Collider>().enabled = false;
+            Preview = Instantiate(buildingCollection.GetBuild(build).prefab, transform);
+            if(Preview.GetComponent<Collider>())
+                Preview.GetComponent<Collider>().enabled = false;
+            Preview.name = "PreviewPlacement";
         }
         Preview.transform.position = interactObject.transform.position + new Vector3(0, 1, 0);
 
@@ -43,8 +46,9 @@ public class BuildingManager : MonoBehaviour
             Chunk chunk = interactObject.ParentChunk;
             if (chunk.AvailableSpace((int)vec.x, (int)vec.y, (int)vec.z))
             {
-                InteractObject obj = Instantiate(buildingCollection.GetBuild("grass").prefab, chunk.transform).GetComponent<InteractObject>();
+                InteractObject obj = Instantiate(buildingCollection.GetBuild(build).prefab, chunk.transform).GetComponent<InteractObject>();
                 chunk.AddInteractObject((int)vec.x, (int)vec.y, (int)vec.z, obj);
+                MouseManager.SetNormalMouse();
             }
         }
         else if (Input.GetMouseButtonDown(1))

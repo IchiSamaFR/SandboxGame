@@ -64,6 +64,34 @@ public class BuildObject : InteractObject
     }
 
 
+    public override List<InteractObject> GetAroundInteract()
+    {
+        List<InteractObject> around = new List<InteractObject>();
+        InteractObject tempObj;
+        tempObj = ParentChunk.GetInteractObject(PosX + 1, PosY, PosZ);
+        if (tempObj != null)
+            around.Add(tempObj);
+        tempObj = ParentChunk.GetInteractObject(PosX - 1, PosY, PosZ);
+        if (tempObj != null)
+            around.Add(tempObj);
+
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ + 1);
+        if (tempObj != null)
+            around.Add(tempObj);
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ - 1);
+        if (tempObj != null)
+            around.Add(tempObj);
+
+
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY + 1, PosZ);
+        if (tempObj != null)
+            around.Add(tempObj);
+        tempObj = ParentChunk.GetInteractObject(PosX, PosY - 1, PosZ);
+        if (tempObj != null)
+            around.Add(tempObj);
+
+        return around;
+    }
     public override void Destroy()
     {
         List<BuildObject> interacts = GetAroundBuilds();

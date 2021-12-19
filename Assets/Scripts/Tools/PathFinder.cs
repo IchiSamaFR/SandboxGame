@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PathFinder : MonoBehaviour
@@ -97,11 +98,10 @@ public class PathFinder : MonoBehaviour
         public void CheckAround(Node[,,] Nodes)
         {
             List<Node> nodes = PathFinder.GetNodesAround(Nodes, Pos);
-
             for (int i = 0; i < nodes.Count; i++)
             {
                 int newGCost = 0;
-                if (nodes[i].Pos.x != Pos.x && nodes[i].Pos.y != Pos.y)
+                if (nodes[i].Pos.x != Pos.x && nodes[i].Pos.z != Pos.z)
                     newGCost = Gcost + 14;
                 else
                     newGCost = Gcost + 10;
@@ -127,12 +127,12 @@ public class PathFinder : MonoBehaviour
         instance = this;
     }
 
-    public static List<Node> GetPath(Vector3 start, Vector3 end)
+    public static Task<List<Node>> GetPath(Vector3 start, Vector3 end)
     {
         if ((int)start.x == (int)end.x
            && (int)start.y == (int)end.y
            && (int)start.z == (int)end.z)
-            return new List<Node>();
+            return Task.FromResult(new List<Node>());
 
         Vector3 StartingNode = start;
         Vector3 EndingNode = end;
@@ -152,7 +152,7 @@ public class PathFinder : MonoBehaviour
             next = SelectNextNode(Nodes);
         }
 
-        return Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath;
+        return Task.FromResult(Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath);
     }
     public static bool SelectNextNode(Node[,,] Nodes)
     {
