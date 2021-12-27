@@ -151,6 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 860534540}
+  - {fileID: 1789837668}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -350,7 +351,7 @@ Transform:
   m_LocalScale: {x: 50, y: 1, z: 50}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &646169908
 MeshCollider:
@@ -532,7 +533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 860534539}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50, y: 1, z: 30}
+  m_LocalPosition: {x: 50, y: 0, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -969,8 +970,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 146523096}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1789837669
 MonoBehaviour:
@@ -1035,12 +1036,18 @@ MonoBehaviour:
     name: Grass
     prefab: {fileID: 5978322930450597222, guid: 9189607088e035c4ead6b0bb9aafb605, type: 3}
     Material: {fileID: 2100000, guid: 49251659fdde0dd45a591ef6056b80eb, type: 2}
+    WalkableOn: 0
+    WalkableIn: 0
   - id: dirt
     name: Dirt
     prefab: {fileID: 5978322930450597222, guid: c9a7f2a5bcfb2aa4ab36d271ead04e75, type: 3}
     Material: {fileID: 2100000, guid: e4b0e0574743ab54bb8af1969b0c5c9f, type: 2}
+    WalkableOn: 0
+    WalkableIn: 0
   buildStructs:
   - id: firecamp
     name: FireCamp
     prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
     Material: {fileID: 0}
+    WalkableOn: 0
+    WalkableIn: 0

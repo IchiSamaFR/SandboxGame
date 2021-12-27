@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30427920c196ed6489281b11a92f2fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WalkableOn: 1
+  WalkableIn: 0
   ParentChunk: {fileID: 0}
   PosX: 0
   PosY: 0

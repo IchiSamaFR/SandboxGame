@@ -27,9 +27,6 @@ public class MapGenerator : MonoBehaviour
     public NoiseMap NoiseMap = new NoiseMap();
     float[,] Noise { get => NoiseMap.Noise; }
 
-    [Header("Level generation")]
-    public List<MapGenLevel> levels = new List<MapGenLevel>();
-
     [Header("Map gen")]
     Transform Content;
 
@@ -120,7 +117,10 @@ public class MapGenerator : MonoBehaviour
         {
             for (int x = 0; x < tex.width; x++)
             {
-                colourMap[z * width * chunkWidth + x] = Color.Lerp(Color.black, Color.white, Noise[x, z]);
+                if (Noise[x, z] < 0.08)
+                    colourMap[z * width * chunkWidth + x] = Color.black;
+                else
+                    colourMap[z * width * chunkWidth + x] = Color.Lerp(Color.black, Color.white, Noise[x, z]);
             }
         }
         tex.SetPixels(colourMap);
@@ -132,29 +132,6 @@ public class MapGenerator : MonoBehaviour
     public float[,] GetNoiseChunk(int xPos, int zPos)
     {
         return NoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
-    }
-
-    public Color GetLevelColor(float level)
-    {
-        Color _color = new Color();
-
-        for (int i = 0; i < levels.Count; i++)
-        {
-            if (level > levels[i].level)
-            {
-                if(i + 1 == levels.Count)
-                {
-                    _color = levels[i].color;
-                    return levels[i].color;
-                }
-                else if (level < levels[i + 1].level)
-                {
-                    _color = levels[i].color;
-                    return levels[i].color;
-                }
-            }
-        }
-        return _color;
     }
     
     public Chunk GetChunk(int x, int z)
@@ -183,12 +160,6 @@ public class MapGenerator : MonoBehaviour
         if (c == null) return null;
         return c.GetInteractObject(posx, y, posz);
     }
-}
-[System.Serializable]
-public class MapGenLevel
-{
-    public float level;
-    public Color color = new Color(1, 1, 1, 1);
 }
 
 [System.Serializable]

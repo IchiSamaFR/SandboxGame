@@ -7,10 +7,10 @@ public class PathFinder : MonoBehaviour
 {
     public class Node
     {
-        public List<Node> NodesPath = new List<Node>();
+        public List<Vector3> NodesPath = new List<Vector3>();
 
-        public bool IsEndNode; //Is the ending node
-        public bool IsStartNode; //Is the start node
+        public bool IsEndNode;
+        public bool IsStartNode;
         public bool PathFound;
 
         public bool isChecked;
@@ -22,6 +22,9 @@ public class PathFinder : MonoBehaviour
         public int Gcost = 0;
         public int Hcost = 0;
         public int Fcost { get => Gcost + Hcost; }
+
+        public bool WalkableOn;
+        public bool WalkableIn;
 
         public Node(Vector3 pos)
         {
@@ -42,12 +45,16 @@ public class PathFinder : MonoBehaviour
             PathFound = false;
         }
 
-        public void SetEndPath(Node node, List<Node> path = null)
+        public void SetEndPath(Node node, List<Vector3> path = null)
         {
             PathFound = true;
             InteractObject obj = MapGenerator.instance.GetInteractObjectByWorld((int)Pos.x, (int)Pos.y, (int)Pos.z);
 
-            NodesPath.Add(node);
+            if(node.WalkableIn)
+                NodesPath.Add(node.Pos + new Vector3(0, - 1, 0));
+            else
+                NodesPath.Add(node.Pos);
+
             if (path != null)
                 NodesPath.AddRange(path);
 
@@ -127,12 +134,12 @@ public class PathFinder : MonoBehaviour
         instance = this;
     }
 
-    public static Task<List<Node>> GetPath(Vector3 start, Vector3 end)
+    public static List<Vector3> GetPath(Vector3 start, Vector3 end)
     {
         if ((int)start.x == (int)end.x
            && (int)start.y == (int)end.y
            && (int)start.z == (int)end.z)
-            return Task.FromResult(new List<Node>());
+            return new List<Vector3>();
 
         Vector3 StartingNode = start;
         Vector3 EndingNode = end;
@@ -152,7 +159,7 @@ public class PathFinder : MonoBehaviour
             next = SelectNextNode(Nodes);
         }
 
-        return Task.FromResult(Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath);
+        return Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].NodesPath;
     }
     public static bool SelectNextNode(Node[,,] Nodes)
     {
@@ -161,7 +168,8 @@ public class PathFinder : MonoBehaviour
         {
             if (node == null) continue;
             
-            if (!node.isChecked && (nodeToSelect == null || node.Fcost < nodeToSelect.Fcost) && node.Fcost > 0)
+            if (!node.isChecked && (nodeToSelect == null || node.Fcost < nodeToSelect.Fcost) && node.Fcost > 0
+                && (node.WalkableIn || node.WalkableOn))
             {
                 nodeToSelect = node;
             }
@@ -188,20 +196,21 @@ public class PathFinder : MonoBehaviour
             {
                 if (x != posx || z != posz)
                 {
-                    if (GetNode(Nodes, x, posy, z) != null
+                    Node nodeToCheck;
+                    if ((nodeToCheck = GetNode(Nodes, x, posy, z)) != null
                         && GetNode(Nodes, x, posy + 1, z) == null)
                     {
-                        nodes.Add(GetNode(Nodes, x, posy, z));
+                        nodes.Add(nodeToCheck);
                     }
-                    else if (GetNode(Nodes, x, posy + 1, z) != null
+                    else if ((nodeToCheck = GetNode(Nodes, x, posy + 1, z)) != null
                         && GetNode(Nodes, x, posy + 2, z) == null)
                     {
-                        nodes.Add(GetNode(Nodes, x, posy + 1, z));
+                        nodes.Add(nodeToCheck);
                     }
-                    else if (GetNode(Nodes, x, posy - 1, z) != null
+                    else if ((nodeToCheck = GetNode(Nodes, x, posy - 1, z)) != null
                         && GetNode(Nodes, x, posy, z) == null)
                     {
-                        nodes.Add(GetNode(Nodes, x, posy - 1, z));
+                        nodes.Add(nodeToCheck);
                     }
                 }
             }
@@ -216,7 +225,11 @@ public class PathFinder : MonoBehaviour
         {
             InteractObject obj = MapGenerator.instance.GetInteractObjectByWorld(x, y, z);
             if (obj != null)
+            {
                 Nodes[x, y, z] = new Node(new Vector3(obj.WorldPosX, obj.WorldPosY, obj.WorldPosZ));
+                Nodes[x, y, z].WalkableIn = obj.WalkableIn;
+                Nodes[x, y, z].WalkableOn = obj.WalkableOn;
+            }
         }
 
         return Nodes[x, y, z];

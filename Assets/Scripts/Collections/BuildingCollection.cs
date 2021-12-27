@@ -7,10 +7,14 @@ public class BuildingCollection : MonoBehaviour
     [System.Serializable]
     public class BuildPrefab
     {
+        [Header("BaseInfo")]
         public string id;
         public string name;
         public GameObject prefab;
         public Material Material;
+        [Header("Path")]
+        public bool WalkableOn;
+        public bool WalkableIn;
     }
 
     public static BuildingCollection instance;

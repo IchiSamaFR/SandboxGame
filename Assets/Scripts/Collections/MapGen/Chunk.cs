@@ -47,7 +47,6 @@ public class Chunk : MonoBehaviour
         {
             for (int z = 0; z < Length; z++)
             {
-                // 0.08f is the maximum darkest accepted
                 float minimum = 0.08f;
                 if (NoiseMap[x, z] < minimum || x - 1 == Width || z - 1 == Length) continue;
 

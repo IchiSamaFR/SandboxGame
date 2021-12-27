@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InteractObject : MonoBehaviour
 {
+    [Header("Path")]
+    public bool WalkableOn = false;
+    public bool WalkableIn = false;
+
     [Header("Position")]
     public Chunk ParentChunk;
     public int PosX;
