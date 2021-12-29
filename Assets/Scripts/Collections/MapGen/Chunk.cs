@@ -42,6 +42,8 @@ public class Chunk : MonoBehaviour
     void Gen()
     {
         NoiseMap = map.GetNoiseChunk(PosX, PosZ);
+        float[,] forestNoise = map.GetForestNoiseChunk(PosX, PosZ);
+        float[,] rockNoise = map.GetRockNoiseChunk(PosX, PosZ);
 
         for (int x = 0; x < Width; x++)
         {
@@ -60,6 +62,20 @@ public class Chunk : MonoBehaviour
                         obj = Instantiate(BuildingCollection.instance.GetBuild("dirt").prefab, transform);
                     InteractObject interact = obj.GetComponent<InteractObject>();
                     AddInitInteractObject(x, y, z, interact);
+                }
+                if (forestNoise[x,z] >= map.MinForestNoise)
+                {
+                    GameObject obj;
+                    obj = Instantiate(BuildingCollection.instance.GetBuild("treepine").prefab, transform);
+                    InteractObject interact = obj.GetComponent<InteractObject>();
+                    AddInitInteractObject(x, height + 1, z, interact);
+                }
+                else if (rockNoise[x, z] >= map.MinRockNoise)
+                {
+                    GameObject obj;
+                    obj = Instantiate(BuildingCollection.instance.GetBuild("rock").prefab, transform);
+                    InteractObject interact = obj.GetComponent<InteractObject>();
+                    AddInitInteractObject(x, height + 1, z, interact);
                 }
             }
         }

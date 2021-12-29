@@ -23,9 +23,16 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Noise Map")]
     public RawImage rawImage;
+    public float MinNoise = 0.08f;
+    public float MinForestNoise = 0.7f;
+    public float MinRockNoise = 0.7f;
 
     public NoiseMap NoiseMap = new NoiseMap();
+    public NoiseMap ForestNoiseMap = new NoiseMap();
+    public NoiseMap RockNoiseMap = new NoiseMap();
     float[,] Noise { get => NoiseMap.Noise; }
+    float[,] ForestNoise { get => ForestNoiseMap.Noise; }
+    float[,] RockNoise { get => RockNoiseMap.Noise; }
 
     [Header("Map gen")]
     Transform Content;
@@ -70,6 +77,8 @@ public class MapGenerator : MonoBehaviour
     {
         DestroyChunks();
         NoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        ForestNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        RockNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
 
         Content = GameObject.Instantiate(new GameObject(), transform).transform;
         Content.name = "Map";
@@ -109,6 +118,8 @@ public class MapGenerator : MonoBehaviour
     public void GenImage()
     {
         NoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        ForestNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        RockNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
 
         Texture2D tex = new Texture2D(width * chunkWidth, length * chunkLength);
         Color[] colourMap = new Color[(width * chunkWidth) * (length * chunkLength)];
@@ -117,10 +128,20 @@ public class MapGenerator : MonoBehaviour
         {
             for (int x = 0; x < tex.width; x++)
             {
-                if (Noise[x, z] < 0.08)
+                if (Noise[x, z] < MinNoise)
                     colourMap[z * width * chunkWidth + x] = Color.black;
                 else
-                    colourMap[z * width * chunkWidth + x] = Color.Lerp(Color.black, Color.white, Noise[x, z]);
+                {
+                    colourMap[z * width * chunkWidth + x] = Color.Lerp(new Color(0.5f, 1, 0.5f), new Color(0.4f, 0.9f, 0.4f), Noise[x, z]);
+                    if(ForestNoise[x, z] >= MinForestNoise)
+                    {
+                        colourMap[z * width * chunkWidth + x] = new Color(0.1f, 0.6f, 0.1f);
+                    }
+                    else if (RockNoise[x, z] >= MinRockNoise)
+                    {
+                        colourMap[z * width * chunkWidth + x] = Color.red;
+                    }
+                }
             }
         }
         tex.SetPixels(colourMap);
@@ -133,7 +154,15 @@ public class MapGenerator : MonoBehaviour
     {
         return NoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
     }
-    
+    public float[,] GetForestNoiseChunk(int xPos, int zPos)
+    {
+        return ForestNoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
+    }
+    public float[,] GetRockNoiseChunk(int xPos, int zPos)
+    {
+        return RockNoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
+    }
+
     public Chunk GetChunk(int x, int z)
     {
         if (!MathT.IntBetween(x, 0, width) || !MathT.IntBetween(z, 0, length)) return null;
@@ -166,6 +195,7 @@ public class MapGenerator : MonoBehaviour
 public class NoiseMap
 {
     public bool AutoUpdate = true;
+    public bool FallOff = true;
     public int Seed = 321354;
     public float Scale = 1;
     [Range(1, 20)]
@@ -179,7 +209,7 @@ public class NoiseMap
 
     public void GenNoiseMap(int width, int length)
     {
-        Noise = NoiseGenerator.Create(width, length, Scale, Seed, octaves, persistance, lacunarity, offset);
+        Noise = NoiseGenerator.Create(width, length, Scale, Seed, octaves, persistance, lacunarity, offset, FallOff);
     }
 
     public float[,] GetNoiseChunk(int xPos, int zPos, int width, int length)
