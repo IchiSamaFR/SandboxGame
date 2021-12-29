@@ -18,8 +18,11 @@ public class InteractObject : MonoBehaviour
     public int WorldPosY { get => PosY; }
     public int WorldPosZ { get => ParentChunk.PosZ * ParentChunk.Length + PosZ; }
 
-    [Header("Informations")]
+    [Header("Interact Informations")]
     public string id;
+    public int healthPoints;
+    public int MaxHealthPoints;
+    public BuildingStatus buildingStatus;
 
     public virtual void Set(Chunk chunk, int posX, int posY, int posZ)
     {

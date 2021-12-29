@@ -10,16 +10,4 @@ public class Keys : MonoBehaviour
     public static string left = "q";
     public static string down = "s";
     public static string right = "d";
-    
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

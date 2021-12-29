@@ -7,6 +7,9 @@ public class BuildingManager : MonoBehaviour
     BuildingCollection buildingCollection;
     GameObject Preview;
 
+    public string toBuild = "firecamp";
+    public List<InteractObject> objectsToBuild = new List<InteractObject>();
+
     private void Start()
     {
         buildingCollection = BuildingCollection.instance;
@@ -23,7 +26,6 @@ public class BuildingManager : MonoBehaviour
 
         RaycastHit hit;
         InteractObject interactObject = MouseManager.GetOverInteract(out hit);
-        string build = "firecamp";
 
         if (!interactObject)
         {
@@ -33,7 +35,7 @@ public class BuildingManager : MonoBehaviour
 
         if (!Preview)
         {
-            Preview = Instantiate(buildingCollection.GetBuild(build).prefab, transform);
+            Preview = Instantiate(buildingCollection.GetBuild(toBuild).prefab, transform);
             if(Preview.GetComponent<Collider>())
                 Preview.GetComponent<Collider>().enabled = false;
             Preview.name = "PreviewPlacement";
@@ -46,7 +48,7 @@ public class BuildingManager : MonoBehaviour
             Chunk chunk = interactObject.ParentChunk;
             if (chunk.AvailableSpace((int)vec.x, (int)vec.y, (int)vec.z))
             {
-                InteractObject obj = Instantiate(buildingCollection.GetBuild(build).prefab, chunk.transform).GetComponent<InteractObject>();
+                InteractObject obj = Instantiate(buildingCollection.GetBuild(toBuild).prefab, chunk.transform).GetComponent<InteractObject>();
                 chunk.AddInteractObject((int)vec.x, (int)vec.y, (int)vec.z, obj);
                 MouseManager.SetNormalMouse();
             }

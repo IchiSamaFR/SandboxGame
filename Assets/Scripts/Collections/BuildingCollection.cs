@@ -20,6 +20,7 @@ public class BuildingCollection : MonoBehaviour
     public static BuildingCollection instance;
     public List<BuildPrefab> buildBlocks = new List<BuildPrefab>();
     public List<BuildPrefab> buildStructs = new List<BuildPrefab>();
+    public List<BuildPrefab> ressourcesStructs = new List<BuildPrefab>();
 
     private void Awake()
     {
@@ -35,6 +36,10 @@ public class BuildingCollection : MonoBehaviour
         for (int i = 0; i < buildStructs.Count; i++)
         {
             if (buildStructs[i].id.ToLower() == id.ToLower()) return buildStructs[i];
+        }
+        for (int i = 0; i < ressourcesStructs.Count; i++)
+        {
+            if (ressourcesStructs[i].id.ToLower() == id.ToLower()) return ressourcesStructs[i];
         }
         return null;
     }
