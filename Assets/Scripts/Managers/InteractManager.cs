@@ -29,8 +29,7 @@ public class InteractManager : MonoBehaviour
 
             if (CharacterSelected && over.GetComponent<InteractObject>())
             {
-                Vector3 vec = over.position;
-                CharacterSelected.GoTo(vec);
+                CharacterSelected.GoTo(over.GetComponent<InteractObject>());
                 return;
             }
         }

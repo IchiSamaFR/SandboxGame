@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface IRessourceInteract
 {
-
     void SetToHarvest();
     void HarvestHit();
 }

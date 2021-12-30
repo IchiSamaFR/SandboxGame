@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PathFinder : MonoBehaviour
+public static class PathFinder
 {
     public class Node
     {
@@ -80,21 +80,7 @@ public class PathFinder : MonoBehaviour
 
         public int SumHcost(Vector3 end)
         {
-            int x = (int)(end.x - Pos.x >= 0 ? end.x - Pos.x : Pos.x - end.x);
-            int z = (int)(end.z - Pos.z >= 0 ? end.z - Pos.z : Pos.z - end.z);
-
-            int val = 0;
-            if (x - z >= 0)
-            {
-                val += x * 10;
-                val += (x - (x - z)) * 4;
-            }
-            else
-            {
-                val += z * 10;
-                val += (z - (z - x)) * 4;
-            }
-            return val;
+            return MathT.DistanceCost(end, Pos);
         }
 
         public void SetCost(int gcost, int hcost)
@@ -122,23 +108,13 @@ public class PathFinder : MonoBehaviour
             }
         }
     }
-
-    public static PathFinder instance;
-
     public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.chunkWidth; }
     public static int Height { get => MapGenerator.instance.chunkHeight;  }
     public static int Length { get => MapGenerator.instance.length * MapGenerator.instance.chunkLength; }
-    
-    private void Awake()
-    {
-        instance = this;
-    }
 
     public static List<Vector3> GetPath(Vector3 start, Vector3 end)
     {
-        if ((int)start.x == (int)end.x
-           && (int)start.y == (int)end.y
-           && (int)start.z == (int)end.z)
+        if ((int)start.x == (int)end.x && (int)start.y == (int)end.y && (int)start.z == (int)end.z)
             return new List<Vector3>();
 
         Vector3 StartingNode = start;
@@ -146,9 +122,12 @@ public class PathFinder : MonoBehaviour
 
         Node[,,] Nodes = new Node[Width, Height, Length];
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = GetNode(Nodes, (int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z);
+        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = GetNode(Nodes, (int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z);
+
+        //if (Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] == null || Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] == null) return new List<Vector3>();
+
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].IsStartNode = true;
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].SetCost(0, EndingNode);
-        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = GetNode(Nodes, (int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z);
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].IsEndNode = true;
 
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].Select(Nodes);

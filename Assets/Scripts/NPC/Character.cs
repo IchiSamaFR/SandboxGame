@@ -99,18 +99,28 @@ public class Character : MonoBehaviour
         if (MathT.FloatBetween(transformPos.x, nodePos.x - errorMarge, nodePos.x + errorMarge)
             && MathT.FloatBetween(transformPos.z, nodePos.z - errorMarge, nodePos.z + errorMarge))
         {
-            actualPos = Nodes[0];
+            actualPos = Nodes[0] + new Vector3(0, 1, 0);
             Nodes.RemoveAt(0);
         }
     }
 
     #region PathFinding
     Thread pathFinderThread;
-    public void GoTo(Vector3 postoGo)
+    public void GoTo(InteractObject interact)
     {
+        Vector3 posToGo = interact.transform.position;
+
+        if (interact.GetComponent<IRessourceInteract>() != null)
+            posToGo = interact.GetWalkableAround(transform.position).transform.position;
+
+        if (posToGo == actualPos + new Vector3(0, -1, 0))
+        {
+            return;
+        }
+
         if (pathFinderThread != null)
             pathFinderThread.Abort();
-        pathFinderThread = new Thread(() => GetPathTo(postoGo));
+        pathFinderThread = new Thread(() => GetPathTo(posToGo));
         pathFinderThread.Start();
         pathFinderThread.IsBackground = true;
     }

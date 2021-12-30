@@ -117,7 +117,7 @@ MonoBehaviour:
   id: rock
   healthPoints: 0
   MaxHealthPoints: 0
-  buildingStatus: 0
+  buildState: 0
   ressourceToGive: 0
   MaxRessourceAmount: 0
 --- !u!65 &6131218977542366620

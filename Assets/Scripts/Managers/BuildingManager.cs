@@ -27,7 +27,8 @@ public class BuildingManager : MonoBehaviour
         RaycastHit hit;
         InteractObject interactObject = MouseManager.GetOverInteract(out hit);
 
-        if (!interactObject)
+        if (!interactObject || (!interactObject.WalkableOn() && !interactObject.WalkableIn()) || 
+            MapGenerator.instance.GetInteractObjectByWorld(interactObject.WorldPosX, interactObject.WorldPosY + 1, interactObject.WorldPosZ))
         {
             if (Preview) Destroy(Preview);
             return;

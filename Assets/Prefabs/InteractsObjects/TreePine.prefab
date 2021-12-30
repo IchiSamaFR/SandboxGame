@@ -84,7 +84,7 @@ MonoBehaviour:
   id: treepine
   healthPoints: 0
   MaxHealthPoints: 0
-  buildingStatus: 0
+  buildState: 0
   ressourceToGive: 0
   MaxRessourceAmount: 0
 --- !u!65 &4263655161600127950

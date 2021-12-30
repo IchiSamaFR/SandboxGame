@@ -21,7 +21,7 @@ public class InteractObject : MonoBehaviour
     public string id;
     public int healthPoints;
     public int MaxHealthPoints;
-    public BuildingStatus buildingStatus;
+    public BuildState buildState;
 
     public virtual void Set(Chunk chunk, int posX, int posY, int posZ)
     {
@@ -34,7 +34,7 @@ public class InteractObject : MonoBehaviour
     }
     public virtual void SetAfterInit()
     {
-        
+
     }
 
     public virtual void Over()
@@ -50,19 +50,18 @@ public class InteractObject : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
     public virtual List<InteractObject> GetAroundInteract()
     {
         List<InteractObject> around = new List<InteractObject>();
-        InteractObject tempObj;
+        int range = 1;
 
-        for (int x = PosX - 1; x <= PosX + 1; x++)
+        InteractObject newInteract;
+        for (int x = PosX - range; x <= PosX + range; x++)
         {
-            for (int z = PosZ - 1; z <= PosZ + 1; z++)
+            for (int z = PosZ - range; z <= PosZ + range; z++)
             {
                 if (x != PosX || z != PosZ)
                 {
-                    InteractObject newInteract;
                     if ((newInteract = ParentChunk.GetInteractObject(x, PosY, z)) != null
                         && ParentChunk.GetInteractObject(x, PosY + 1, z) == null)
                     {
@@ -81,27 +80,6 @@ public class InteractObject : MonoBehaviour
                 }
             }
         }
-        tempObj = ParentChunk.GetInteractObject(PosX + 1, PosY, PosZ);
-        if (tempObj != null)
-            around.Add(tempObj);
-        tempObj = ParentChunk.GetInteractObject(PosX - 1, PosY, PosZ);
-        if (tempObj != null)
-            around.Add(tempObj);
-
-        tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ + 1);
-        if (tempObj != null)
-            around.Add(tempObj);
-        tempObj = ParentChunk.GetInteractObject(PosX, PosY, PosZ - 1);
-        if (tempObj != null)
-            around.Add(tempObj);
-
-
-        tempObj = ParentChunk.GetInteractObject(PosX, PosY + 1, PosZ);
-        if (tempObj != null)
-            around.Add(tempObj);
-        tempObj = ParentChunk.GetInteractObject(PosX, PosY - 1, PosZ);
-        if (tempObj != null)
-            around.Add(tempObj);
 
         return around;
     }
@@ -138,4 +116,29 @@ public class InteractObject : MonoBehaviour
         return around;
     }
 
+    public InteractObject GetWalkableAround(Vector3 pos)
+    {
+        List<InteractObject> around = new List<InteractObject>();
+
+        foreach (var item in GetAroundInteract())
+        {
+            if (item.WalkableOn())
+                around.Add(item);
+        }
+        if (around.Count <= 0) return null;
+
+        InteractObject obj = around[0];
+        int minValue = -1;
+
+        foreach (var item in around)
+        {
+            int newVal = MathT.DistanceCost(pos, item.transform.position);
+            if (minValue == -1 || (minValue != -1 && newVal < minValue))
+            {
+                obj = item;
+                minValue = newVal;
+            }
+        }
+        return obj;
+    }
 }

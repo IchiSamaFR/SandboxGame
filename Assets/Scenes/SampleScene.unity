@@ -815,7 +815,6 @@ GameObject:
   - component: {fileID: 1789750131}
   - component: {fileID: 1789750133}
   - component: {fileID: 1789750134}
-  - component: {fileID: 1789750132}
   - component: {fileID: 1789750136}
   m_Layer: 0
   m_Name: GameMaster
@@ -848,18 +847,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c98293c5c3c5b244a104e1e8cbd173f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1789750132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1789750129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d33c385bd9903794aa68202094544815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1789750133

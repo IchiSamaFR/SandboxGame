@@ -18,7 +18,13 @@ public class FireCamp : InteractObject
 
     void InstanciateNewCharacters(int amount)
     {
-        List<InteractObject> lst = GetAroundInteract(2);
+        List<InteractObject> lst = new List<InteractObject>();
+
+        foreach (var item in GetAroundInteract(2))
+        {
+            if (item.WalkableOn())
+                lst.Add(item);
+        }
 
         for (int i = 0; i < amount; i++)
         {
@@ -26,8 +32,8 @@ public class FireCamp : InteractObject
 
             int rdm = Random.Range(0, lst.Count - 1);
             InteractObject itObject = lst[rdm];
-            Village.instance.AddCharacter(itObject.WorldPosX, 
-                                          itObject.WorldPosY + 1, 
+            Village.instance.AddCharacter(itObject.WorldPosX,
+                                          itObject.WorldPosY + 1,
                                           itObject.WorldPosZ);
             lst.RemoveAt(rdm);
         }

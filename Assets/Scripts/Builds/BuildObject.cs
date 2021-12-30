@@ -5,13 +5,6 @@ using UnityEngine;
 
 public class BuildObject : InteractObject
 {
-    public enum BuildState
-    {
-        blueprint,
-        built
-    }
-
-    public BuildState State = BuildState.blueprint;
     List<int> triangles = new List<int>();
     List<Vector3> vertices = new List<Vector3>();
     List<Vector2> uvs = new List<Vector2>();

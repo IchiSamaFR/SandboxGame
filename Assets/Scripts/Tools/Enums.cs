@@ -6,10 +6,10 @@ public enum Ressource
     iron,
     copper
 }
-public enum BuildingStatus
+public enum BuildState
 {
-    shadow,
+    blueprint,
     waitingRessources,
-    onContruction,
-    constructed
+    onBuilding,
+    built
 }
