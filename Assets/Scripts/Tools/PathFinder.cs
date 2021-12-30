@@ -145,13 +145,19 @@ public class PathFinder : MonoBehaviour
         Vector3 EndingNode = end;
 
         Node[,,] Nodes = new Node[Width, Height, Length];
-        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = new Node(StartingNode);
+        Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = GetNode(Nodes, (int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z);
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].IsStartNode = true;
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].SetCost(0, EndingNode);
-        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = new Node(EndingNode);
+        Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = GetNode(Nodes, (int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z);
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].IsEndNode = true;
 
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].Select(Nodes);
+
+        if(!Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].WalkableIn &&
+           !Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z].WalkableOn)
+        {
+            return new List<Vector3>();
+        }
 
         bool next = true;
         while (!Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z].PathFound && next)
@@ -227,8 +233,8 @@ public class PathFinder : MonoBehaviour
             if (obj != null)
             {
                 Nodes[x, y, z] = new Node(new Vector3(obj.WorldPosX, obj.WorldPosY, obj.WorldPosZ));
-                Nodes[x, y, z].WalkableIn = obj.WalkableIn;
-                Nodes[x, y, z].WalkableOn = obj.WalkableOn;
+                Nodes[x, y, z].WalkableIn = obj.WalkableIn();
+                Nodes[x, y, z].WalkableOn = obj.WalkableOn();
             }
         }
 

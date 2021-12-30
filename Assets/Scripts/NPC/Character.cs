@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     public float speed = 2;
     public Vector3 transformPos = new Vector3();
     public Vector3 actualPos = new Vector3();
+    public Transform model;
 
     private void Start()
     {
@@ -30,35 +31,35 @@ public class Character : MonoBehaviour
 
             if (actualPos.x == pos.x && actualPos.z < pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
+                model.rotation = Quaternion.Euler(0, 0, 0);
             }
             else if (actualPos.x < pos.x && actualPos.z < pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 45, 0);
+                model.rotation = Quaternion.Euler(0, 45, 0);
             }
             else if (actualPos.x < pos.x && actualPos.z == pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 90, 0);
+                model.rotation = Quaternion.Euler(0, 90, 0);
             }
             else if (actualPos.x < pos.x && actualPos.z > pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 135, 0);
+                model.rotation = Quaternion.Euler(0, 135, 0);
             }
             else if (actualPos.x == pos.x && actualPos.z > pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 180, 0);//
+                model.rotation = Quaternion.Euler(0, 180, 0);//
             }
             else if (actualPos.x > pos.x && actualPos.z > pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 225, 0);
+                model.rotation = Quaternion.Euler(0, 225, 0);
             }
             else if (actualPos.x > pos.x && actualPos.z == pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 270, 0);
+                model.rotation = Quaternion.Euler(0, 270, 0);
             }
             else if (actualPos.x > pos.x && actualPos.z < pos.z)
             {
-                transform.rotation = Quaternion.Euler(0, 315, 0);
+                model.rotation = Quaternion.Euler(0, 315, 0);
             }
         }
     }
@@ -67,13 +68,17 @@ public class Character : MonoBehaviour
         if (Nodes.Count <= 0) return;
         LookNode();
 
-        float errorMarge = 0.05f;
+        float errorMarge = 0.1f;
 
-        Vector3 nodePos = Nodes[0] + new Vector3(0.5f, 0, 0.5f);
+        Vector3 nodePos = Nodes[0];
         if (!MathT.FloatBetween(transformPos.x, nodePos.x - errorMarge, nodePos.x + errorMarge))
         {
             int multiplier = transformPos.x < nodePos.x ? 1 : -1;
             transform.position += new Vector3(speed * Time.deltaTime, 0, 0) * multiplier;
+        }
+        else
+        {
+            transform.position = new Vector3(nodePos.x, transform.position.y, transform.position.z);
         }
         if (transformPos.y != nodePos.y + 1
             && MathT.FloatBetween(transformPos.x, nodePos.x - 0.5f, nodePos.x + 0.5f)
@@ -85,6 +90,10 @@ public class Character : MonoBehaviour
         {
             int multiplier = transformPos.z < nodePos.z ? 1 : -1;
             transform.position += new Vector3(0, 0, speed * Time.deltaTime) * multiplier;
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, nodePos.z);
         }
 
         if (MathT.FloatBetween(transformPos.x, nodePos.x - errorMarge, nodePos.x + errorMarge)
@@ -100,16 +109,14 @@ public class Character : MonoBehaviour
     public void GoTo(Vector3 postoGo)
     {
         if (pathFinderThread != null)
-        {
             pathFinderThread.Abort();
-        }
         pathFinderThread = new Thread(() => GetPathTo(postoGo));
         pathFinderThread.Start();
         pathFinderThread.IsBackground = true;
     }
     private void GetPathTo(Vector3 postoGo)
     {
-        Nodes = PathFinder.GetPath(new Vector3(transformPos.x, transformPos.y - 1, transformPos.z), 
+        Nodes = PathFinder.GetPath(actualPos + new Vector3(0, -1, 0), 
                                    new Vector3(postoGo.x, postoGo.y, postoGo.z));
     }
     #endregion

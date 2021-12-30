@@ -1059,13 +1059,13 @@ MonoBehaviour:
     name: Grass
     prefab: {fileID: 5978322930450597222, guid: 9189607088e035c4ead6b0bb9aafb605, type: 3}
     Material: {fileID: 2100000, guid: 49251659fdde0dd45a591ef6056b80eb, type: 2}
-    WalkableOn: 0
+    WalkableOn: 1
     WalkableIn: 0
   - id: dirt
     name: Dirt
     prefab: {fileID: 5978322930450597222, guid: c9a7f2a5bcfb2aa4ab36d271ead04e75, type: 3}
     Material: {fileID: 2100000, guid: e4b0e0574743ab54bb8af1969b0c5c9f, type: 2}
-    WalkableOn: 0
+    WalkableOn: 1
     WalkableIn: 0
   buildStructs:
   - id: firecamp
@@ -1073,7 +1073,7 @@ MonoBehaviour:
     prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
     Material: {fileID: 0}
     WalkableOn: 0
-    WalkableIn: 0
+    WalkableIn: 1
   ressourcesStructs:
   - id: treepine
     name: Tree

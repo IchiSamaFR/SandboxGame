@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class InteractObject : MonoBehaviour
 {
-    [Header("Path")]
-    public bool WalkableOn = false;
-    public bool WalkableIn = false;
+    public bool WalkableOn() { return BuildingCollection.instance.GetBuild(id).WalkableOn; }
+    public bool WalkableIn() { return BuildingCollection.instance.GetBuild(id).WalkableIn; }
 
     [Header("Position")]
     public Chunk ParentChunk;

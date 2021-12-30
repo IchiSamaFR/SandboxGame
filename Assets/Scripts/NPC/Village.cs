@@ -23,7 +23,7 @@ public class Village : MonoBehaviour
     public void AddCharacter(int posX, int posY, int posZ)
     {
         Character obj = Instantiate(VillageManager.instance.CharacterPrefab, GameObject.Find("-- Objects --").transform).GetComponent<Character>();
-        obj.transform.position = new Vector3(posX + 0.5f, posY, posZ + 0.5f);
+        obj.transform.position = new Vector3(posX, posY, posZ);
         Villagers.Add(obj);
     }
 }

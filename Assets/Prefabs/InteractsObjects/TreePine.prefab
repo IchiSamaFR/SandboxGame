@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1027857152162719378}
   - component: {fileID: 3917399683082801649}
+  - component: {fileID: 4263655161600127950}
   m_Layer: 0
   m_Name: TreePine
   m_TagString: Untagged
@@ -76,18 +77,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194bfa827dab3fa48bb329a8e963cae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkableOn: 0
-  WalkableIn: 0
   ParentChunk: {fileID: 0}
   PosX: 0
   PosY: 0
   PosZ: 0
-  id: 
+  id: treepine
   healthPoints: 0
   MaxHealthPoints: 0
   buildingStatus: 0
   ressourceToGive: 0
   MaxRessourceAmount: 0
+--- !u!65 &4263655161600127950
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027857152162719377}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 1, z: 0.7}
+  m_Center: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1001 &1027857151056904801
 PrefabInstance:
   m_ObjectHideFlags: 0
