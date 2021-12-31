@@ -151,7 +151,6 @@ public class Chunk : MonoBehaviour
                 return false;
         }
 
-
         InteractObjects[x, y, z] = interactObject;
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
         InteractObjects[x, y, z].Set(this, x, y, z);

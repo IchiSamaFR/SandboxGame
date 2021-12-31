@@ -45,12 +45,13 @@ public class BuildingManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 vec = GetHitPos(hit);
+            Vector3 vec = interactObject.Pos + new Vector3(0, 1, 0);
             Chunk chunk = interactObject.ParentChunk;
             if (chunk.AvailableSpace((int)vec.x, (int)vec.y, (int)vec.z))
             {
                 InteractObject obj = Instantiate(buildingCollection.GetBuild(toBuild).prefab, chunk.transform).GetComponent<InteractObject>();
                 chunk.AddInteractObject((int)vec.x, (int)vec.y, (int)vec.z, obj);
+                if (Preview) Destroy(Preview);
                 MouseManager.SetNormalMouse();
             }
         }

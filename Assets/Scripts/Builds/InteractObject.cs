@@ -9,6 +9,7 @@ public class InteractObject : MonoBehaviour
 
     [Header("Position")]
     public Chunk ParentChunk;
+    public Vector3 Pos { get => new Vector3(PosX, PosY, PosZ); }
     public int PosX;
     public int PosY;
     public int PosZ;
