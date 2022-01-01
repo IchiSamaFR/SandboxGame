@@ -111,7 +111,10 @@ public class Character : MonoBehaviour
         Vector3 posToGo = interact.transform.position;
 
         if (interact.GetComponent<IRessourceInteract>() != null)
+        {
             posToGo = interact.GetWalkableAround(transform.position).transform.position;
+            interact.GetComponent<IRessourceInteract>().HarvestHit();
+        }
 
         if (posToGo == actualPos + new Vector3(0, -1, 0))
         {

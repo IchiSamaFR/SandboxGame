@@ -861,8 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18e3b8c372e1e143aef427f7bbd4bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toBuild: firecamp
-  objectsToBuild: []
+  OrderList: []
 --- !u!114 &1789750134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1008,6 +1007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1974204613}
   - component: {fileID: 1974204614}
+  - component: {fileID: 1974204615}
   m_Layer: 0
   m_Name: Collections
   m_TagString: Untagged
@@ -1041,36 +1041,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02177f9b1223fa94c8c7ebbc789969b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildBlocks:
-  - id: grass
-    name: Grass
-    prefab: {fileID: 5978322930450597222, guid: 9189607088e035c4ead6b0bb9aafb605, type: 3}
+  BuildBlocks:
+  - Id: grass
+    Name: 
+    Prefab: {fileID: 5978322930450597222, guid: 9189607088e035c4ead6b0bb9aafb605, type: 3}
     Material: {fileID: 2100000, guid: 49251659fdde0dd45a591ef6056b80eb, type: 2}
     WalkableOn: 1
     WalkableIn: 0
-  - id: dirt
-    name: Dirt
-    prefab: {fileID: 5978322930450597222, guid: c9a7f2a5bcfb2aa4ab36d271ead04e75, type: 3}
+    BuildOn: 1
+  - Id: dirt
+    Name: 
+    Prefab: {fileID: 5978322930450597222, guid: c9a7f2a5bcfb2aa4ab36d271ead04e75, type: 3}
     Material: {fileID: 2100000, guid: e4b0e0574743ab54bb8af1969b0c5c9f, type: 2}
     WalkableOn: 1
     WalkableIn: 0
-  buildStructs:
-  - id: firecamp
-    name: FireCamp
-    prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
+    BuildOn: 1
+  BuildStructs:
+  - Id: firecamp
+    Name: 
+    Prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
     Material: {fileID: 0}
     WalkableOn: 0
     WalkableIn: 1
-  ressourcesStructs:
-  - id: treepine
-    name: Tree
-    prefab: {fileID: 1027857152162719377, guid: dab3fd71fb663c841af383ab786d8ade, type: 3}
+    BuildOn: 0
+  - Id: stock
+    Name: 
+    Prefab: {fileID: 2574948817103954045, guid: 32a50192f369c8b4aab0628920026ca5, type: 3}
+    Material: {fileID: 0}
+    WalkableOn: 0
+    WalkableIn: 1
+    BuildOn: 0
+  RessourcesStructs:
+  - Id: rock
+    Name: 
+    Prefab: {fileID: 1027857152162719377, guid: 6361783e564745a4aa2f8e13ff715efa, type: 3}
     Material: {fileID: 0}
     WalkableOn: 0
     WalkableIn: 0
-  - id: rock
-    name: Rock
-    prefab: {fileID: 1027857152162719377, guid: 6361783e564745a4aa2f8e13ff715efa, type: 3}
+    BuildOn: 0
+  - Id: treepine
+    Name: 
+    Prefab: {fileID: 1027857152162719377, guid: dab3fd71fb663c841af383ab786d8ade, type: 3}
     Material: {fileID: 0}
     WalkableOn: 0
     WalkableIn: 0
+    BuildOn: 0
+  - Id: wood
+    Name: 
+    Prefab: {fileID: 1027857152162719377, guid: 281fcaeae1d7440468b1f79b876b9d0e, type: 3}
+    Material: {fileID: 0}
+    WalkableOn: 0
+    WalkableIn: 1
+    BuildOn: 0
+--- !u!114 &1974204615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974204612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68308ca58261a2747aec6cc702c4fbfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ressources:
+  - Id: wood
+    Name: wood
+    Prefab: {fileID: 1027857152162719377, guid: 281fcaeae1d7440468b1f79b876b9d0e, type: 3}
+    Type: 0

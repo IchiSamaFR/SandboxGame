@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class InteractObject : MonoBehaviour
 {
-    public bool WalkableOn() { return BuildingCollection.instance.GetBuild(id).WalkableOn; }
-    public bool WalkableIn() { return BuildingCollection.instance.GetBuild(id).WalkableIn; }
+    public bool WalkableOn() { return BuildingCollection.Instance.GetBuild(Id).WalkableOn; }
+    public bool WalkableIn() { return BuildingCollection.Instance.GetBuild(Id).WalkableIn; }
+    public bool BuildOn() { return BuildingCollection.Instance.GetBuild(Id).BuildOn; }
 
     [Header("Position")]
     public Chunk ParentChunk;
@@ -19,10 +20,10 @@ public class InteractObject : MonoBehaviour
     public int WorldPosZ { get => ParentChunk.PosZ * ParentChunk.Length + PosZ; }
 
     [Header("Interact Informations")]
-    public string id;
-    public int healthPoints;
+    public string Id;
+    public int HealthPoints;
     public int MaxHealthPoints;
-    public BuildState buildState;
+    public BuildState BuildState;
 
     public virtual void Set(Chunk chunk, int posX, int posY, int posZ)
     {
@@ -57,26 +58,23 @@ public class InteractObject : MonoBehaviour
         int range = 1;
 
         InteractObject newInteract;
+        InteractObject upInteract;
         for (int x = PosX - range; x <= PosX + range; x++)
         {
             for (int z = PosZ - range; z <= PosZ + range; z++)
             {
                 if (x != PosX || z != PosZ)
                 {
-                    if ((newInteract = ParentChunk.GetInteractObject(x, PosY, z)) != null
-                        && ParentChunk.GetInteractObject(x, PosY + 1, z) == null)
+                    for (int i = -1; i <= 1; i++)
                     {
-                        around.Add(newInteract);
-                    }
-                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY + 1, z)) != null
-                        && ParentChunk.GetInteractObject(x, PosY + 2, z) == null)
-                    {
-                        around.Add(newInteract);
-                    }
-                    else if ((newInteract = ParentChunk.GetInteractObject(x, PosY - 1, z)) != null
-                        && ParentChunk.GetInteractObject(x, PosY, z) == null)
-                    {
-                        around.Add(newInteract);
+                        newInteract = ParentChunk.GetInteractObject(x, PosY + i, z);
+                        upInteract = ParentChunk.GetInteractObject(x, PosY + i + 1, z);
+                        if (newInteract != null
+                            && upInteract == null)
+                        {
+                            around.Add(newInteract);
+                            break;
+                        }
                     }
                 }
             }
@@ -123,8 +121,12 @@ public class InteractObject : MonoBehaviour
 
         foreach (var item in GetAroundInteract())
         {
-            if (item.WalkableOn())
+            if (item.WalkableOn() || item.WalkableIn())
                 around.Add(item);
+            else if (item.WalkableIn())
+            {
+                around.Add(MapGenerator.instance.GetInteractObjectByWorld(item.PosX, item.PosY - 1, item.PosZ));
+            }
         }
         if (around.Count <= 0) return null;
 

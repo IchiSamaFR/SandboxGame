@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class FireCamp : InteractObject
 {
-    private void Start()
-    {
-        
-    }
-
     public override void SetAfterInit()
     {
         if (Village.instance == null) VillageManager.instance.AddFirstVillage();

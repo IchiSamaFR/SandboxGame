@@ -81,11 +81,11 @@ MonoBehaviour:
   PosX: 0
   PosY: 0
   PosZ: 0
-  id: treepine
-  healthPoints: 0
+  Id: treepine
+  HealthPoints: 0
   MaxHealthPoints: 0
-  buildState: 0
-  ressourceToGive: 0
+  BuildState: 0
+  RessourceToGive: 0
   MaxRessourceAmount: 0
 --- !u!65 &4263655161600127950
 BoxCollider:

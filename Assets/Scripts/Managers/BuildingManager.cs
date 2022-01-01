@@ -7,12 +7,12 @@ public class BuildingManager : MonoBehaviour
     BuildingCollection buildingCollection;
     GameObject Preview;
 
-    public string toBuild = "firecamp";
-    public List<InteractObject> objectsToBuild = new List<InteractObject>();
+    private string ToBuild = "firecamp";
+    public List<InteractObject> OrderList = new List<InteractObject>();
 
     private void Start()
     {
-        buildingCollection = BuildingCollection.instance;
+        buildingCollection = BuildingCollection.Instance;
     }
 
     void Update()
@@ -27,7 +27,7 @@ public class BuildingManager : MonoBehaviour
         RaycastHit hit;
         InteractObject interactObject = MouseManager.GetOverInteract(out hit);
 
-        if (!interactObject || (!interactObject.WalkableOn() && !interactObject.WalkableIn()) || 
+        if (!interactObject || !interactObject.WalkableOn() || 
             MapGenerator.instance.GetInteractObjectByWorld(interactObject.WorldPosX, interactObject.WorldPosY + 1, interactObject.WorldPosZ))
         {
             if (Preview) Destroy(Preview);
@@ -36,7 +36,7 @@ public class BuildingManager : MonoBehaviour
 
         if (!Preview)
         {
-            Preview = Instantiate(buildingCollection.GetBuild(toBuild).prefab, transform);
+            Preview = Instantiate(buildingCollection.GetBuild(ToBuild).Prefab, transform);
             if(Preview.GetComponent<Collider>())
                 Preview.GetComponent<Collider>().enabled = false;
             Preview.name = "PreviewPlacement";
@@ -49,8 +49,7 @@ public class BuildingManager : MonoBehaviour
             Chunk chunk = interactObject.ParentChunk;
             if (chunk.AvailableSpace((int)vec.x, (int)vec.y, (int)vec.z))
             {
-                InteractObject obj = Instantiate(buildingCollection.GetBuild(toBuild).prefab, chunk.transform).GetComponent<InteractObject>();
-                chunk.AddInteractObject((int)vec.x, (int)vec.y, (int)vec.z, obj);
+                chunk.AddInteractObject((int)vec.x, (int)vec.y, (int)vec.z, ToBuild);
                 if (Preview) Destroy(Preview);
                 MouseManager.SetNormalMouse();
             }

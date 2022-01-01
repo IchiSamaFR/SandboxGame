@@ -8,60 +8,61 @@ public class BuildingCollection : MonoBehaviour
     public class BuildPrefab
     {
         [Header("BaseInfo")]
-        public string id;
-        public string name;
-        public GameObject prefab;
+        public string Id;
+        public string Name;
+        public GameObject Prefab;
         public Material Material;
         [Header("Path")]
         public bool WalkableOn;
         public bool WalkableIn;
+        public bool BuildOn;
     }
 
-    public static BuildingCollection instance;
-    public List<BuildPrefab> buildBlocks = new List<BuildPrefab>();
-    public List<BuildPrefab> buildStructs = new List<BuildPrefab>();
-    public List<BuildPrefab> ressourcesStructs = new List<BuildPrefab>();
+    public static BuildingCollection Instance;
+    public List<BuildPrefab> BuildBlocks = new List<BuildPrefab>();
+    public List<BuildPrefab> BuildStructs = new List<BuildPrefab>();
+    public List<BuildPrefab> RessourcesStructs = new List<BuildPrefab>();
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
     
     public BuildPrefab GetBuild(string id)
     {
-        for (int i = 0; i < buildBlocks.Count; i++)
+        foreach (var item in BuildBlocks)
         {
-            if (buildBlocks[i].id.ToLower() == id.ToLower()) return buildBlocks[i];
+            if (item.Id == id) return item;
         }
-        for (int i = 0; i < buildStructs.Count; i++)
+        foreach (var item in BuildStructs)
         {
-            if (buildStructs[i].id.ToLower() == id.ToLower()) return buildStructs[i];
+            if (item.Id == id) return item;
         }
-        for (int i = 0; i < ressourcesStructs.Count; i++)
+        foreach (var item in RessourcesStructs)
         {
-            if (ressourcesStructs[i].id.ToLower() == id.ToLower()) return ressourcesStructs[i];
+            if (item.Id == id) return item;
         }
         return null;
     }
     
     public Color GetMaterialColor(string id)
     {
-        for (int i = 0; i < buildBlocks.Count; i++)
+        for (int i = 0; i < BuildBlocks.Count; i++)
         {
-            if (buildBlocks[i].id == id)
+            if (BuildBlocks[i].Id == id)
             {
-                return buildBlocks[i].Material.color;
+                return BuildBlocks[i].Material.color;
             }
         }
         return new Color();
     }
     public Material GetMaterial(string id)
     {
-        for (int i = 0; i < buildBlocks.Count; i++)
+        for (int i = 0; i < BuildBlocks.Count; i++)
         {
-            if (buildBlocks[i].id == id)
+            if (BuildBlocks[i].Id == id)
             {
-                return buildBlocks[i].Material;
+                return BuildBlocks[i].Material;
             }
         }
         return new Material(Shader.Find("Standard"));

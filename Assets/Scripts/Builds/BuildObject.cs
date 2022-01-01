@@ -48,7 +48,7 @@ public class BuildObject : InteractObject
 
     public void SetColor()
     {
-        MaterialColor = BuildingCollection.instance.GetMaterialColor(id) * (1 - PosY * (0.4f / MapGenerator.instance.chunkHeight));
+        MaterialColor = BuildingCollection.Instance.GetMaterialColor(Id) * (1 - PosY * (0.4f / MapGenerator.instance.chunkHeight));
         GetComponent<MeshRenderer>().material.color = MaterialColor;
     }
     public void SetColor(Color color)
@@ -332,7 +332,7 @@ public class BuildObject : InteractObject
 
         MeshRenderer meshR = GetComponent<MeshRenderer>();
         if (!meshR.material)
-            meshR.material = BuildingCollection.instance.GetMaterial(id);
+            meshR.material = BuildingCollection.Instance.GetMaterial(Id);
 
         mesh.Clear();
         mesh.vertices = vertices.ToArray();

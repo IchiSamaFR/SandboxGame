@@ -46,14 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30427920c196ed6489281b11a92f2fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkableOn: 1
-  WalkableIn: 0
   ParentChunk: {fileID: 0}
   PosX: 0
   PosY: 0
   PosZ: 0
-  id: dirt
-  State: 0
+  Id: dirt
+  HealthPoints: 0
+  MaxHealthPoints: 0
+  BuildState: 0
 --- !u!65 &-5107059418655426526
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e4b0e0574743ab54bb8af1969b0c5c9f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

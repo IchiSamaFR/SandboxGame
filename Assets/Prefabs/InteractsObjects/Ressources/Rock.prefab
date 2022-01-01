@@ -114,11 +114,11 @@ MonoBehaviour:
   PosX: 0
   PosY: 0
   PosZ: 0
-  id: rock
-  healthPoints: 0
+  Id: rock
+  HealthPoints: 0
   MaxHealthPoints: 0
-  buildState: 0
-  ressourceToGive: 0
+  BuildState: 0
+  RessourceToGive: 0
   MaxRessourceAmount: 0
 --- !u!65 &6131218977542366620
 BoxCollider:
