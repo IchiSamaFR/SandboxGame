@@ -42,6 +42,7 @@ public class BuildingCollection : MonoBehaviour
         {
             if (item.Id == id) return item;
         }
+        print("null");
         return null;
     }
     

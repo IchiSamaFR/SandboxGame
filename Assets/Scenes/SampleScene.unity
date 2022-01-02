@@ -685,7 +685,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!28 &1215211269
+--- !u!28 &1416621551
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -787,7 +787,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 1215211269}
+  m_Texture: {fileID: 1416621551}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1079,6 +1079,13 @@ MonoBehaviour:
     WalkableOn: 0
     WalkableIn: 0
     BuildOn: 0
+  - Id: stone
+    Name: 
+    Prefab: {fileID: 1027857152162719377, guid: caa8eb29a81835848a4a2d7e44b70264, type: 3}
+    Material: {fileID: 0}
+    WalkableOn: 0
+    WalkableIn: 1
+    BuildOn: 0
   - Id: treepine
     Name: 
     Prefab: {fileID: 1027857152162719377, guid: dab3fd71fb663c841af383ab786d8ade, type: 3}
@@ -1110,3 +1117,7 @@ MonoBehaviour:
     Name: wood
     Prefab: {fileID: 1027857152162719377, guid: 281fcaeae1d7440468b1f79b876b9d0e, type: 3}
     Type: 0
+  - Id: stone
+    Name: stone
+    Prefab: {fileID: 1027857152162719377, guid: caa8eb29a81835848a4a2d7e44b70264, type: 3}
+    Type: 1

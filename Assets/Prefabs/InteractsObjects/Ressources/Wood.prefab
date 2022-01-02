@@ -131,9 +131,9 @@ MonoBehaviour:
   HealthPoints: 0
   MaxHealthPoints: 0
   BuildState: 0
-  RessourceId: wood
   AmountStacked: 0
   MaxAmountStacked: 3
+  modelContainer: {fileID: 1027857152070082956}
 --- !u!1 &1518233954800709611
 GameObject:
   m_ObjectHideFlags: 0

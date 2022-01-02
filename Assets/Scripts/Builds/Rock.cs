@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tree : InteractObject, IRessourceInteract
+public class Rock : InteractObject, IRessourceInteract
 {
     [Header("Ressource Field")]
     [SerializeField]
-    RessourcesCollection.RessourceType RessourceToGive = RessourcesCollection.RessourceType.wood;
+    RessourcesCollection.RessourceType RessourceToGive = RessourcesCollection.RessourceType.stone;
     public int MaxRessourceAmount;
 
     public void HarvestHit()
@@ -30,7 +30,7 @@ public class Tree : InteractObject, IRessourceInteract
 
         if (findPos)
         {
-            InteractObject worldRessource = posRess.ParentChunk.AddInteractObject(posRess.PosX, posRess.PosY + 1, posRess.PosZ, "wood");
+            InteractObject worldRessource = posRess.ParentChunk.AddInteractObject(posRess.PosX, posRess.PosY + 1, posRess.PosZ, "stone");
             worldRessource.GetComponent<WorldDroppedRessource>().AddRessource(RessourcesCollection.Instance.GetRessource(RessourceToGive));
             return;
         }

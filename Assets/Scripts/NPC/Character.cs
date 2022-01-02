@@ -116,7 +116,8 @@ public class Character : MonoBehaviour
             interact.GetComponent<IRessourceInteract>().HarvestHit();
         }
 
-        if (posToGo == actualPos + new Vector3(0, -1, 0))
+        if (posToGo.x == actualPos.x && posToGo.z == actualPos.z && 
+            MathT.FloatBetween((posToGo.y - actualPos.y), -1, 1))
         {
             return;
         }
