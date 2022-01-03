@@ -7,7 +7,7 @@ public class Village : MonoBehaviour
     public static Village instance;
     public string Id;
     public int VillagerAmount;
-    public List<Character> Villagers = new List<Character>();
+    public List<Character> Villagers;
 
 
     void Start()
@@ -24,6 +24,5 @@ public class Village : MonoBehaviour
     {
         Character obj = Instantiate(VillageManager.instance.CharacterPrefab, GameObject.Find("-- Objects --").transform).GetComponent<Character>();
         obj.transform.position = new Vector3(posX, posY, posZ);
-        Villagers.Add(obj);
     }
 }

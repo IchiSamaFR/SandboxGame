@@ -6,7 +6,6 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     List<Vector3> Nodes = new List<Vector3>();
-    private bool resetLook = true;
     public float speed = 2;
     public Vector3 transformPos = new Vector3();
     public Vector3 actualPos = new Vector3();
@@ -112,14 +111,10 @@ public class Character : MonoBehaviour
 
         if (interact.GetComponent<IRessourceInteract>() != null)
         {
-            posToGo = interact.GetWalkableAround(transform.position).transform.position;
             interact.GetComponent<IRessourceInteract>().HarvestHit();
-        }
-
-        if (posToGo.x == actualPos.x && posToGo.z == actualPos.z && 
-            MathT.FloatBetween((posToGo.y - actualPos.y), -1, 1))
-        {
-            return;
+            InteractObject interactAround = interact.GetWalkableAround(transform.position);
+            if (!interactAround) return;
+            posToGo = interactAround.transform.position;
         }
 
         if (pathFinderThread != null)

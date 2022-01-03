@@ -25,12 +25,13 @@ public class InteractObject : MonoBehaviour
     public int MaxHealthPoints;
     public BuildState BuildState;
 
-    public virtual void Set(Chunk chunk, int posX, int posY, int posZ)
+    public virtual void Set(Chunk chunk, int posX, int posY, int posZ, string id)
     {
         ParentChunk = chunk;
         PosX = posX;
         PosY = posY;
         PosZ = posZ;
+        Id = id;
 
         transform.position = chunk.transform.position + new Vector3(PosX, PosY, PosZ);
     }
@@ -123,10 +124,6 @@ public class InteractObject : MonoBehaviour
         {
             if (item.WalkableOn() || item.WalkableIn())
                 around.Add(item);
-            else if (item.WalkableIn())
-            {
-                around.Add(MapGenerator.instance.GetInteractObjectByWorld(item.PosX, item.PosY - 1, item.PosZ));
-            }
         }
         if (around.Count <= 0) return null;
 

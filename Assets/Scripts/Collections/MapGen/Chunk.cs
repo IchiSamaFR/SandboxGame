@@ -55,27 +55,18 @@ public class Chunk : MonoBehaviour
                 int height = (int)Mathf.Clamp(((NoiseMap[x, z] - minimum) * Height), 0, Height);
                 for (int y = 0; y <= height; y++)
                 {
-                    GameObject obj;
                     if (y == height)
-                        obj = Instantiate(BuildingCollection.Instance.GetBuild("grass").Prefab, transform);
+                        AddInitInteractObject(x, y, z, "grass");
                     else
-                        obj = Instantiate(BuildingCollection.Instance.GetBuild("dirt").Prefab, transform);
-                    InteractObject interact = obj.GetComponent<InteractObject>();
-                    AddInitInteractObject(x, y, z, interact);
+                        AddInitInteractObject(x, y, z, "dirt");
                 }
                 if (forestNoise[x,z] >= Map.MinForestNoise)
                 {
-                    GameObject obj;
-                    obj = Instantiate(BuildingCollection.Instance.GetBuild("treepine").Prefab, transform);
-                    InteractObject interact = obj.GetComponent<InteractObject>();
-                    AddInitInteractObject(x, height + 1, z, interact);
+                    AddInitInteractObject(x, height + 1, z, "treepine");
                 }
                 else if (rockNoise[x, z] >= Map.MinRockNoise)
                 {
-                    GameObject obj;
-                    obj = Instantiate(BuildingCollection.Instance.GetBuild("rock").Prefab, transform);
-                    InteractObject interact = obj.GetComponent<InteractObject>();
-                    AddInitInteractObject(x, height + 1, z, interact);
+                    AddInitInteractObject(x, height + 1, z, "rock");
                 }
             }
         }
@@ -152,11 +143,11 @@ public class Chunk : MonoBehaviour
         }
         InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab).GetComponent<InteractObject>();
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
-        InteractObjects[x, y, z].Set(this, x, y, z);
+        InteractObjects[x, y, z].Set(this, x, y, z, toBuild);
         InteractObjects[x, y, z].SetAfterInit();
         return InteractObjects[x, y, z];
     }
-    public bool AddInitInteractObject(int x, int y, int z, InteractObject interactObject)
+    public bool AddInitInteractObject(int x, int y, int z, string toBuild)
     {
         if (!AvailableSpace(x, y, z)) return false;
 
@@ -166,10 +157,9 @@ public class Chunk : MonoBehaviour
             return false;
         }
 
-
-        InteractObjects[x, y, z] = interactObject;
+        InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab).GetComponent<InteractObject>();
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
-        InteractObjects[x, y, z].Set(this, x, y, z);
+        InteractObjects[x, y, z].Set(this, x, y, z, toBuild);
         return true;
     }
     public bool DestroyInteractObject(int x, int y, int z)

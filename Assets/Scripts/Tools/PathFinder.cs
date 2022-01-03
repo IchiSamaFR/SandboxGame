@@ -114,13 +114,26 @@ public static class PathFinder
 
     public static List<Vector3> GetPath(Vector3 start, Vector3 end)
     {
-        if ((int)start.x == (int)end.x && (int)start.y == (int)end.y && (int)start.z == (int)end.z)
+        if ((int)start.x == (int)end.x && MathT.FloatBetween(start.y - end.y, -1, 1) && (int)start.z == (int)end.z)
             return new List<Vector3>();
-
+        
+        Node[,,] Nodes = new Node[Width, Height, Length];
         Vector3 StartingNode = start;
         Vector3 EndingNode = end;
 
-        Node[,,] Nodes = new Node[Width, Height, Length];
+        while (true)
+        {
+            if (GetNode(Nodes, (int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z).WalkableIn)
+            {
+                if (EndingNode.y == 0)
+                    return new List<Vector3>();
+
+                EndingNode.y -= 1;
+            }
+            break;
+        }
+
+
         Nodes[(int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z] = GetNode(Nodes, (int)StartingNode.x, (int)StartingNode.y, (int)StartingNode.z);
         Nodes[(int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z] = GetNode(Nodes, (int)EndingNode.x, (int)EndingNode.y, (int)EndingNode.z);
 
@@ -182,20 +195,17 @@ public static class PathFinder
                 if (x != posx || z != posz)
                 {
                     Node nodeToCheck;
-                    if ((nodeToCheck = GetNode(Nodes, x, posy, z)) != null
-                        && GetNode(Nodes, x, posy + 1, z) == null)
+                    Node upNodeToCheck;
+                    for (int i = -1; i <= 1; i++)
                     {
-                        nodes.Add(nodeToCheck);
-                    }
-                    else if ((nodeToCheck = GetNode(Nodes, x, posy + 1, z)) != null
-                        && GetNode(Nodes, x, posy + 2, z) == null)
-                    {
-                        nodes.Add(nodeToCheck);
-                    }
-                    else if ((nodeToCheck = GetNode(Nodes, x, posy - 1, z)) != null
-                        && GetNode(Nodes, x, posy, z) == null)
-                    {
-                        nodes.Add(nodeToCheck);
+                        nodeToCheck = GetNode(Nodes, x, posy + i, z);
+                        upNodeToCheck = GetNode(Nodes, x, posy + i + 1, z);
+                        if (nodeToCheck != null
+                            && (upNodeToCheck == null || upNodeToCheck.WalkableIn))
+                        {
+                            nodes.Add(nodeToCheck);
+                            break;
+                        }
                     }
                 }
             }

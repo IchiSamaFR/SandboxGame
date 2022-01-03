@@ -11,10 +11,6 @@ public class BuildObject : InteractObject
     List<Vector3> normales = new List<Vector3>();
     Color MaterialColor;
 
-    public override void Set(Chunk chunk, int posX, int posY, int posZ)
-    {
-        base.Set(chunk, posX, posY, posZ);
-    }
     public override void SetAfterInit()
     {
         InitMesh(true);
