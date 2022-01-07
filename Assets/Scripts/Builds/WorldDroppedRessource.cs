@@ -16,7 +16,7 @@ public class WorldDroppedRessource : InteractObject
             Debug.LogError("Aucun id disponible.");
         }
 
-        if(Id == ressource.Id
+        if(Id == ressource.Name
             && AmountStacked < MaxAmountStacked)
         {
             AmountStacked++;

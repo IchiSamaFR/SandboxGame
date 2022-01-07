@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb3aafcdf9e4284a9d27dcb16fc63a6, type: 3}
+  m_Name: treepine
+  m_EditorClassIdentifier: 
+  Name: treepine
+  Prefab: {fileID: 1027857152162719377, guid: dab3fd71fb663c841af383ab786d8ade, type: 3}
+  Material: {fileID: 0}
+  WalkableOn: 0
+  WalkableIn: 0
+  BuildOn: 0
+  BuildIn: 0

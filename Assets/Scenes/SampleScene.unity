@@ -1041,65 +1041,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02177f9b1223fa94c8c7ebbc789969b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildBlocks:
-  - Id: grass
-    Name: 
-    Prefab: {fileID: 5978322930450597222, guid: 9189607088e035c4ead6b0bb9aafb605, type: 3}
-    Material: {fileID: 2100000, guid: 49251659fdde0dd45a591ef6056b80eb, type: 2}
-    WalkableOn: 1
-    WalkableIn: 0
-    BuildOn: 1
-  - Id: dirt
-    Name: 
-    Prefab: {fileID: 5978322930450597222, guid: c9a7f2a5bcfb2aa4ab36d271ead04e75, type: 3}
-    Material: {fileID: 2100000, guid: e4b0e0574743ab54bb8af1969b0c5c9f, type: 2}
-    WalkableOn: 1
-    WalkableIn: 0
-    BuildOn: 1
-  BuildStructs:
-  - Id: firecamp
-    Name: 
-    Prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 1
-    BuildOn: 0
-  - Id: stock
-    Name: 
-    Prefab: {fileID: 2574948817103954045, guid: 32a50192f369c8b4aab0628920026ca5, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 1
-    BuildOn: 0
-  RessourcesStructs:
-  - Id: rock
-    Name: 
-    Prefab: {fileID: 1027857152162719377, guid: 6361783e564745a4aa2f8e13ff715efa, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 0
-    BuildOn: 0
-  - Id: stone
-    Name: 
-    Prefab: {fileID: 1027857152162719377, guid: caa8eb29a81835848a4a2d7e44b70264, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 1
-    BuildOn: 0
-  - Id: treepine
-    Name: 
-    Prefab: {fileID: 1027857152162719377, guid: dab3fd71fb663c841af383ab786d8ade, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 0
-    BuildOn: 0
-  - Id: wood
-    Name: 
-    Prefab: {fileID: 1027857152162719377, guid: 281fcaeae1d7440468b1f79b876b9d0e, type: 3}
-    Material: {fileID: 0}
-    WalkableOn: 0
-    WalkableIn: 1
-    BuildOn: 0
+  Builds:
+  - {fileID: 11400000, guid: fef87a9bef2178a4f972394897dffe75, type: 2}
+  - {fileID: 11400000, guid: 9b16b0a40bb8c1449a3f570c4487c2b9, type: 2}
+  - {fileID: 11400000, guid: b7ca0ecf6a9b55f47b6ea482aaa03244, type: 2}
+  - {fileID: 11400000, guid: fe241ce86d41e5842a61047d86fdb5d3, type: 2}
+  - {fileID: 11400000, guid: cbc1d14931e7d1049b9f499208e060df, type: 2}
+  - {fileID: 11400000, guid: 7ded67647b6d4bb4da83aa4170c3d89d, type: 2}
+  - {fileID: 11400000, guid: addefd7f858d59d4ca8df2ee294a9b88, type: 2}
+  - {fileID: 11400000, guid: 48fb72be798fe424c994bb06bb85ad8c, type: 2}
 --- !u!114 &1974204615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,11 +1063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ressources:
-  - Id: wood
-    Name: wood
-    Prefab: {fileID: 1027857152162719377, guid: 281fcaeae1d7440468b1f79b876b9d0e, type: 3}
+  - Name: wood
     Type: 0
-  - Id: stone
-    Name: stone
-    Prefab: {fileID: 1027857152162719377, guid: caa8eb29a81835848a4a2d7e44b70264, type: 3}
+  - Name: stone
     Type: 1

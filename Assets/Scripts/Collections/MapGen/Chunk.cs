@@ -141,7 +141,7 @@ public class Chunk : MonoBehaviour
             else
                 return null;
         }
-        InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab).GetComponent<InteractObject>();
+        InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab, transform).GetComponent<InteractObject>();
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
         InteractObjects[x, y, z].Set(this, x, y, z, toBuild);
         InteractObjects[x, y, z].SetAfterInit();
@@ -157,7 +157,7 @@ public class Chunk : MonoBehaviour
             return false;
         }
 
-        InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab).GetComponent<InteractObject>();
+        InteractObjects[x, y, z] = Instantiate(BuildingCollection.Instance.GetBuild(toBuild).Prefab, transform).GetComponent<InteractObject>();
         InteractObjects[x, y, z].name = $"InteractObject[{x};{y};{z}]";
         InteractObjects[x, y, z].Set(this, x, y, z, toBuild);
         return true;

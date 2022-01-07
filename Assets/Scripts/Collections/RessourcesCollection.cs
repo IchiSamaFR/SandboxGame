@@ -16,9 +16,7 @@ public class RessourcesCollection : MonoBehaviour
     public class Ressource
     {
         [Header("BaseInfo")]
-        public string Id;
         public string Name;
-        public GameObject Prefab;
         public RessourceType Type;
     }
 
@@ -34,7 +32,7 @@ public class RessourcesCollection : MonoBehaviour
     {
         foreach (var item in Ressources)
         {
-            if (item.Id == id) return item;
+            if (item.Name == id) return item;
         }
         return null;
     }
