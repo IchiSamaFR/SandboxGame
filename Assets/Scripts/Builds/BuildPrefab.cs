@@ -8,7 +8,8 @@ public class BuildPrefab : ScriptableObject
     [Header("BaseInfo")]
     public string Name;
     public GameObject Prefab;
-    public Material Material;
+    [Header("Build")]
+    public bool Inventoried;
     [Header("Path")]
     public bool WalkableOn;
     public bool WalkableIn;

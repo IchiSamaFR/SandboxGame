@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: firecamp
   Prefab: {fileID: 2574948817103954045, guid: b7228fdfa8bc28f43843f5921676b482, type: 3}
-  Material: {fileID: 0}
+  Inventoried: 1
   WalkableOn: 0
   WalkableIn: 1
   BuildOn: 0

@@ -27,7 +27,7 @@ public class BuildingCollection : MonoBehaviour
         {
             if (Builds[i].Name == id)
             {
-                return Builds[i].Material.color;
+                return Builds[i].Prefab.GetComponent<MeshRenderer>().material.color;
             }
         }
         return new Color();
@@ -38,7 +38,7 @@ public class BuildingCollection : MonoBehaviour
         {
             if (Builds[i].Name == id)
             {
-                return Builds[i].Material;
+                return Builds[i].Prefab.GetComponent<MeshRenderer>().material;
             }
         }
         return new Material(Shader.Find("Standard"));

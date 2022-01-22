@@ -14,12 +14,16 @@ public class InteractManager : MonoBehaviour
 
     void CheckRaycast()
     {
-        if (!MouseManager.IsNormalMode) return;
+        if (!MouseManager.IsNormalMode)
+        {
+            CharacterSelected = null;
+            return;
+        }
         
         Transform over = MouseManager.GetOver();
 
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && over)
         {
             if (over.GetComponent<Character>())
             {

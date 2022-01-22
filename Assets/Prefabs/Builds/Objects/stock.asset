@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: stock
   Prefab: {fileID: 2574948817103954045, guid: 32a50192f369c8b4aab0628920026ca5, type: 3}
-  Material: {fileID: 0}
+  Inventoried: 1
   WalkableOn: 0
   WalkableIn: 1
   BuildOn: 0
