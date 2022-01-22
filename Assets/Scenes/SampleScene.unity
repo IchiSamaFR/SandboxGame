@@ -997,6 +997,7 @@ MonoBehaviour:
   Id: village
   VillagerAmount: 0
   Villagers: []
+  InteractObjects: []
 --- !u!1 &1974204612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,8 +1063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68308ca58261a2747aec6cc702c4fbfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ressources:
-  - Name: wood
-    Type: 0
-  - Name: stone
-    Type: 1
+  Resources:
+  - Type: 0
+    Amount: 0
+  - Type: 1
+    Amount: 0

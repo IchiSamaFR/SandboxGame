@@ -96,9 +96,11 @@ MonoBehaviour:
   PosZ: 0
   Id: treepine
   HealthPoints: 0
-  MaxHealthPoints: 0
+  MaxHealthPoints: 10
   BuildState: 0
-  RessourceToGive: 0
+  RessourceToGive:
+    Type: 0
+    Amount: 10
   MaxRessourceAmount: 0
 --- !u!1001 &1027857151056904801
 PrefabInstance:

@@ -5,37 +5,62 @@ using UnityEngine;
 public class WorldDroppedRessource : InteractObject
 {
     [Header("Ressource Info")]
-    public int AmountStacked;
+    public ResourcesCollection.Resource Resource;
     public int MaxAmountStacked;
     public Transform modelContainer;
 
-    public bool AddRessource(RessourcesCollection.Ressource ressource)
+    public override void SetAfterInit()
     {
-        if(Id == string.Empty)
+        base.SetAfterInit();
+
+        if (Id == string.Empty)
         {
             Debug.LogError("Aucun id disponible.");
         }
-
-        if(Id == ressource.Name
-            && AmountStacked < MaxAmountStacked)
-        {
-            AmountStacked++;
-            ChangeModel();
-            return true;
-        }
-
-        return false;
+        Resource = ResourcesCollection.Instance.GetRessource(Id).Clone();
     }
-    public bool GetRessource()
+
+    public ResourcesCollection.Resource AddRessource(ResourcesCollection.Resource resource)
     {
-        if (AmountStacked > 0)
+        if(Resource.Type == resource.Type)
         {
-            AmountStacked--;
-            ChangeModel();
-            return true;
+            if (Resource.Amount + resource.Amount <= MaxAmountStacked)
+            {
+                Resource.Amount += resource.Amount;
+                ChangeModel();
+                return null;
+            }
+            else
+            {
+                int rest = Resource.Amount + resource.Amount - MaxAmountStacked;
+                Resource.Amount = MaxAmountStacked;
+                ChangeModel();
+
+                resource.Amount = rest;
+                return resource;
+            }
         }
 
-        return false;
+        return resource;
+    }
+    public ResourcesCollection.Resource GetRessource(int amount)
+    {
+        if (Resource.Amount < amount)
+        {
+            return Resource;
+        }
+        
+        if (Resource.Amount > amount)
+        {
+            Resource.Amount -= amount;
+            ChangeModel();
+
+            ResourcesCollection.Resource toReturn = Resource.Clone();
+            toReturn.Amount = amount;
+            return toReturn;
+        }
+
+        return null;
     }
 
     public void ChangeModel()
@@ -44,9 +69,13 @@ public class WorldDroppedRessource : InteractObject
         {
             item.gameObject.SetActive(false);
         }
-        if(modelContainer.childCount > AmountStacked)
+        if(Resource.Amount == 0)
         {
-            modelContainer.GetChild(AmountStacked - 1).gameObject.SetActive(true);
+            return;
+        }
+        else if(modelContainer.childCount > Resource.Amount)
+        {
+            modelContainer.GetChild(Resource.Amount - 1).gameObject.SetActive(true);
         }
         else
         {

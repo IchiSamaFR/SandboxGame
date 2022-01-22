@@ -129,9 +129,11 @@ MonoBehaviour:
   PosZ: 0
   Id: rock
   HealthPoints: 0
-  MaxHealthPoints: 0
+  MaxHealthPoints: 10
   BuildState: 0
-  RessourceToGive: 1
+  RessourceToGive:
+    Type: 1
+    Amount: 10
   MaxRessourceAmount: 0
 --- !u!1 &1294628783630257820
 GameObject:

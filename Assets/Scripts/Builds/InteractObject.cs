@@ -33,6 +33,7 @@ public class InteractObject : MonoBehaviour
         PosZ = posZ;
         Id = id;
 
+        HealthPoints = MaxHealthPoints;
         transform.position = chunk.transform.position + new Vector3(PosX, PosY, PosZ);
     }
     public virtual void SetAfterInit()
@@ -45,12 +46,21 @@ public class InteractObject : MonoBehaviour
 
     }
 
+    public virtual void GetDamage(int amount = 1)
+    {
+        HealthPoints -= amount;
+        if(HealthPoints <= 0)
+        {
+            Destroy();
+        }
+    }
     public virtual void Action()
     {
 
     }
     public virtual void Destroy()
     {
+        Village.instance.RemoveInteract(this);
         Destroy(gameObject);
     }
     public virtual List<InteractObject> GetAroundInteract()
