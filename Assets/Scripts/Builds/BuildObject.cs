@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class BuildObject : InteractObject
 {
-    List<int> triangles = new List<int>();
-    List<Vector3> vertices = new List<Vector3>();
-    List<Vector2> uvs = new List<Vector2>();
-    List<Vector3> normales = new List<Vector3>();
-    Color MaterialColor;
+    private List<int> Triangles = new List<int>();
+    private List<Vector3> Vertices = new List<Vector3>();
+    private List<Vector2> Uvs = new List<Vector2>();
+    private List<Vector3> Normales = new List<Vector3>();
+    private Color MaterialColor;
 
     public override void SetAfterInit()
     {
@@ -44,7 +44,7 @@ public class BuildObject : InteractObject
 
     public void SetColor()
     {
-        MaterialColor = BuildingCollection.Instance.GetMaterialColor(Id) * (1 - PosY * (0.4f / MapGenerator.instance.chunkHeight));
+        MaterialColor = BuildingCollection.Instance.GetMaterialColor(Id) * (1 - PosY * (0.4f / MapGenerator.instance.ChunkHeight));
         GetComponent<MeshRenderer>().material.color = MaterialColor;
     }
     public void SetColor(Color color)
@@ -141,10 +141,10 @@ public class BuildObject : InteractObject
         down = ndown;
 
 
-        vertices.Clear();
-        triangles.Clear();
-        uvs.Clear();
-        normales.Clear();
+        Vertices.Clear();
+        Triangles.Clear();
+        Uvs.Clear();
+        Normales.Clear();
 
         if(left && right && forward && backward && up && down)
         {
@@ -168,155 +168,155 @@ public class BuildObject : InteractObject
         int ind = 0;
         if (!forward)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(0, 0, 0));
-            vertices.Add(new Vector3(1, 0, 0));
-            vertices.Add(new Vector3(1, 1, 0));
-            vertices.Add(new Vector3(0, 1, 0));
+            Vertices.Add(new Vector3(0, 0, 0));
+            Vertices.Add(new Vector3(1, 0, 0));
+            Vertices.Add(new Vector3(1, 1, 0));
+            Vertices.Add(new Vector3(0, 1, 0));
 
-            uvs.Add(new Vector2(0.125f * 0, 0));
-            uvs.Add(new Vector2(0.125f * 1, 0));
-            uvs.Add(new Vector2(0.125f * 1, 1f));
-            uvs.Add(new Vector2(0.125f * 0, 1));
+            Uvs.Add(new Vector2(0.125f * 0, 0));
+            Uvs.Add(new Vector2(0.125f * 1, 0));
+            Uvs.Add(new Vector2(0.125f * 1, 1f));
+            Uvs.Add(new Vector2(0.125f * 0, 1));
 
-            normales.Add(Vector3.forward);
-            normales.Add(Vector3.forward);
-            normales.Add(Vector3.forward);
-            normales.Add(Vector3.forward);
+            Normales.Add(Vector3.forward);
+            Normales.Add(Vector3.forward);
+            Normales.Add(Vector3.forward);
+            Normales.Add(Vector3.forward);
         }
         if (!right)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(1, 0, 0));
-            vertices.Add(new Vector3(1, 0, 1));
-            vertices.Add(new Vector3(1, 1, 1));
-            vertices.Add(new Vector3(1, 1, 0));
+            Vertices.Add(new Vector3(1, 0, 0));
+            Vertices.Add(new Vector3(1, 0, 1));
+            Vertices.Add(new Vector3(1, 1, 1));
+            Vertices.Add(new Vector3(1, 1, 0));
 
-            uvs.Add(new Vector2(0.125f * 1, 0));
-            uvs.Add(new Vector2(0.125f * 2, 0));
-            uvs.Add(new Vector2(0.125f * 2, 1f));
-            uvs.Add(new Vector2(0.125f * 1, 1));
+            Uvs.Add(new Vector2(0.125f * 1, 0));
+            Uvs.Add(new Vector2(0.125f * 2, 0));
+            Uvs.Add(new Vector2(0.125f * 2, 1f));
+            Uvs.Add(new Vector2(0.125f * 1, 1));
 
-            normales.Add(Vector3.right);
-            normales.Add(Vector3.right);
-            normales.Add(Vector3.right);
-            normales.Add(Vector3.right);
+            Normales.Add(Vector3.right);
+            Normales.Add(Vector3.right);
+            Normales.Add(Vector3.right);
+            Normales.Add(Vector3.right);
         }
 
         if (!backward)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(0, 0, 1));
-            vertices.Add(new Vector3(1, 0, 1));
-            vertices.Add(new Vector3(1, 1, 1));
-            vertices.Add(new Vector3(0, 1, 1));
+            Vertices.Add(new Vector3(0, 0, 1));
+            Vertices.Add(new Vector3(1, 0, 1));
+            Vertices.Add(new Vector3(1, 1, 1));
+            Vertices.Add(new Vector3(0, 1, 1));
 
-            uvs.Add(new Vector2(0.125f * 2, 0));
-            uvs.Add(new Vector2(0.125f * 3, 0));
-            uvs.Add(new Vector2(0.125f * 3, 1f));
-            uvs.Add(new Vector2(0.125f * 2, 1));
+            Uvs.Add(new Vector2(0.125f * 2, 0));
+            Uvs.Add(new Vector2(0.125f * 3, 0));
+            Uvs.Add(new Vector2(0.125f * 3, 1f));
+            Uvs.Add(new Vector2(0.125f * 2, 1));
 
-            normales.Add(Vector3.back);
-            normales.Add(Vector3.back);
-            normales.Add(Vector3.back);
-            normales.Add(Vector3.back);
+            Normales.Add(Vector3.back);
+            Normales.Add(Vector3.back);
+            Normales.Add(Vector3.back);
+            Normales.Add(Vector3.back);
         }
         if (!left)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(0, 0, 0));
-            vertices.Add(new Vector3(0, 0, 1));
-            vertices.Add(new Vector3(0, 1, 1));
-            vertices.Add(new Vector3(0, 1, 0));
+            Vertices.Add(new Vector3(0, 0, 0));
+            Vertices.Add(new Vector3(0, 0, 1));
+            Vertices.Add(new Vector3(0, 1, 1));
+            Vertices.Add(new Vector3(0, 1, 0));
 
-            uvs.Add(new Vector2(0.125f * 3, 0));
-            uvs.Add(new Vector2(0.125f * 4, 0));
-            uvs.Add(new Vector2(0.125f * 4, 1f));
-            uvs.Add(new Vector2(0.125f * 3, 1));
+            Uvs.Add(new Vector2(0.125f * 3, 0));
+            Uvs.Add(new Vector2(0.125f * 4, 0));
+            Uvs.Add(new Vector2(0.125f * 4, 1f));
+            Uvs.Add(new Vector2(0.125f * 3, 1));
 
-            normales.Add(Vector3.left);
-            normales.Add(Vector3.left);
-            normales.Add(Vector3.left);
-            normales.Add(Vector3.left);
+            Normales.Add(Vector3.left);
+            Normales.Add(Vector3.left);
+            Normales.Add(Vector3.left);
+            Normales.Add(Vector3.left);
         }
 
         if (!up)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(0, 1, 0));
-            vertices.Add(new Vector3(1, 1, 0));
-            vertices.Add(new Vector3(1, 1, 1));
-            vertices.Add(new Vector3(0, 1, 1));
+            Vertices.Add(new Vector3(0, 1, 0));
+            Vertices.Add(new Vector3(1, 1, 0));
+            Vertices.Add(new Vector3(1, 1, 1));
+            Vertices.Add(new Vector3(0, 1, 1));
 
-            uvs.Add(new Vector2(0.125f * 4, 0));
-            uvs.Add(new Vector2(0.125f * 5, 0));
-            uvs.Add(new Vector2(0.125f * 5, 1f));
-            uvs.Add(new Vector2(0.125f * 4, 1));
+            Uvs.Add(new Vector2(0.125f * 4, 0));
+            Uvs.Add(new Vector2(0.125f * 5, 0));
+            Uvs.Add(new Vector2(0.125f * 5, 1f));
+            Uvs.Add(new Vector2(0.125f * 4, 1));
 
-            normales.Add(Vector3.up);
-            normales.Add(Vector3.up);
-            normales.Add(Vector3.up);
-            normales.Add(Vector3.up);
+            Normales.Add(Vector3.up);
+            Normales.Add(Vector3.up);
+            Normales.Add(Vector3.up);
+            Normales.Add(Vector3.up);
         }
         if (!down)
         {
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(0 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(3 + 4 * ind);
-            triangles.Add(1 + 4 * ind);
-            triangles.Add(2 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(0 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(3 + 4 * ind);
+            Triangles.Add(1 + 4 * ind);
+            Triangles.Add(2 + 4 * ind);
             ind++;
 
-            vertices.Add(new Vector3(0, 0, 0));
-            vertices.Add(new Vector3(1, 0, 0));
-            vertices.Add(new Vector3(1, 0, 1));
-            vertices.Add(new Vector3(0, 0, 1));
+            Vertices.Add(new Vector3(0, 0, 0));
+            Vertices.Add(new Vector3(1, 0, 0));
+            Vertices.Add(new Vector3(1, 0, 1));
+            Vertices.Add(new Vector3(0, 0, 1));
 
-            uvs.Add(new Vector2(0.125f * 5, 0));
-            uvs.Add(new Vector2(0.125f * 6, 0));
-            uvs.Add(new Vector2(0.125f * 6, 1f));
-            uvs.Add(new Vector2(0.125f * 5, 1));
+            Uvs.Add(new Vector2(0.125f * 5, 0));
+            Uvs.Add(new Vector2(0.125f * 6, 0));
+            Uvs.Add(new Vector2(0.125f * 6, 1f));
+            Uvs.Add(new Vector2(0.125f * 5, 1));
 
-            normales.Add(Vector3.down);
-            normales.Add(Vector3.down);
-            normales.Add(Vector3.down);
-            normales.Add(Vector3.down);
+            Normales.Add(Vector3.down);
+            Normales.Add(Vector3.down);
+            Normales.Add(Vector3.down);
+            Normales.Add(Vector3.down);
         }
 
         BuildMesh();
@@ -331,9 +331,9 @@ public class BuildObject : InteractObject
             meshR.material = BuildingCollection.Instance.GetMaterial(Id);
 
         mesh.Clear();
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
-        mesh.uv = uvs.ToArray();
-        mesh.normals = normales.ToArray();
+        mesh.vertices = Vertices.ToArray();
+        mesh.triangles = Triangles.ToArray();
+        mesh.uv = Uvs.ToArray();
+        mesh.normals = Normales.ToArray();
     }
 }

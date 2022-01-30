@@ -75,7 +75,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1027857152070082956}
   m_Layer: 0
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,11 +168,10 @@ MonoBehaviour:
   MaxHealthPoints: 0
   BuildState: 0
   Resource:
-    Name: 
     Type: 0
     Amount: 0
   MaxAmountStacked: 6
-  modelContainer: {fileID: 1027857152070082956}
+  ModelContainer: {fileID: 1027857152070082956}
 --- !u!1 &1518233954800709611
 GameObject:
   m_ObjectHideFlags: 0

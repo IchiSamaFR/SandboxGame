@@ -35,9 +35,7 @@ public class MouseManager : MonoBehaviour
 
     public static Transform GetOver()
     {
-        RaycastHit hitPoint;
-        return GetOver(out hitPoint);
-
+        return GetOver(out RaycastHit hitPoint);
     }
     public static Transform GetOver(out RaycastHit hitPoint)
     {
@@ -55,9 +53,7 @@ public class MouseManager : MonoBehaviour
 
     public static Character GetOverCharacter()
     {
-        RaycastHit hitPoint;
-        return GetOverCharacter(out hitPoint);
-
+        return GetOverCharacter(out RaycastHit hitPoint);
     }
     public static Character GetOverCharacter(out RaycastHit hitPoint)
     {
@@ -75,8 +71,7 @@ public class MouseManager : MonoBehaviour
 
     public static InteractObject GetOverInteract()
     {
-        RaycastHit hitPoint;
-        return GetOverInteract(out hitPoint);
+        return GetOverInteract(out RaycastHit hitPoint);
     }
     public static InteractObject GetOverInteract(out RaycastHit hitPoint)
     {

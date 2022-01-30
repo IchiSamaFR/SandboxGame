@@ -7,7 +7,7 @@ public class WorldDroppedRessource : InteractObject
     [Header("Ressource Info")]
     public ResourcesCollection.Resource Resource;
     public int MaxAmountStacked;
-    public Transform modelContainer;
+    public Transform ModelContainer;
 
     public override void SetAfterInit()
     {
@@ -65,7 +65,7 @@ public class WorldDroppedRessource : InteractObject
 
     public void ChangeModel()
     {
-        foreach (Transform item in modelContainer)
+        foreach (Transform item in ModelContainer)
         {
             item.gameObject.SetActive(false);
         }
@@ -73,13 +73,13 @@ public class WorldDroppedRessource : InteractObject
         {
             return;
         }
-        else if(modelContainer.childCount > Resource.Amount)
+        else if(ModelContainer.childCount > Resource.Amount)
         {
-            modelContainer.GetChild(Resource.Amount - 1).gameObject.SetActive(true);
+            ModelContainer.GetChild(Resource.Amount - 1).gameObject.SetActive(true);
         }
         else
         {
-            modelContainer.GetChild(modelContainer.childCount - 1).gameObject.SetActive(true);
+            ModelContainer.GetChild(ModelContainer.childCount - 1).gameObject.SetActive(true);
         }
     }
 }

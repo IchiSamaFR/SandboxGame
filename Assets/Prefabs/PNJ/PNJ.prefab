@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5179972474924671150}
   m_Layer: 0
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,10 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11077149890c2104794297acf43e8ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  transformPos: {x: 0, y: 0, z: 0}
-  actualPos: {x: 0, y: 0, z: 0}
-  model: {fileID: 5179972474924671150}
+  Speed: 2
+  TransformPos: {x: 0, y: 0, z: 0}
+  ActualPos: {x: 0, y: 0, z: 0}
+  Model: {fileID: 5179972474924671150}
 --- !u!65 &4851591302209374544
 BoxCollider:
   m_ObjectHideFlags: 0

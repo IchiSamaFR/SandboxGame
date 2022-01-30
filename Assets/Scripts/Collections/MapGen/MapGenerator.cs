@@ -12,14 +12,11 @@ public class MapGenerator : MonoBehaviour
     public int length;
 
     public GameObject chunkPref;
-    public int chunkWidth = 10;
-    public int chunkHeight = 10;
-    public int chunkLength = 10;
+    public int ChunkWidth = 10;
+    public int ChunkHeight = 10;
+    public int ChunkLength = 10;
 
-    public Chunk[,] chunks;
-
-    public int chunksCount = 0;
-    public int newChunkPrice { get => chunksCount * 100; }
+    public Chunk[,] Chunks;
 
     [Header("Noise Map")]
     public RawImage rawImage;
@@ -30,9 +27,9 @@ public class MapGenerator : MonoBehaviour
     public NoiseMap NoiseMap = new NoiseMap();
     public NoiseMap ForestNoiseMap = new NoiseMap();
     public NoiseMap RockNoiseMap = new NoiseMap();
-    float[,] Noise { get => NoiseMap.Noise; }
-    float[,] ForestNoise { get => ForestNoiseMap.Noise; }
-    float[,] RockNoise { get => RockNoiseMap.Noise; }
+    private float[,] Noise { get => NoiseMap.Noise; }
+    private float[,] ForestNoise { get => ForestNoiseMap.Noise; }
+    private float[,] RockNoise { get => RockNoiseMap.Noise; }
 
     [Header("Map gen")]
     Transform Content;
@@ -46,10 +43,10 @@ public class MapGenerator : MonoBehaviour
             NoiseMap.lacunarity = 0;
         if (NoiseMap.Scale < 0)
             NoiseMap.Scale = 0;
-        if (chunkWidth < 0)
-            chunkWidth = 0;
-        if (chunkLength < 0)
-            chunkLength = 0;
+        if (ChunkWidth < 0)
+            ChunkWidth = 0;
+        if (ChunkLength < 0)
+            ChunkLength = 0;
     }
 
     void Awake()
@@ -60,7 +57,7 @@ public class MapGenerator : MonoBehaviour
             return;
         }
         instance = this;
-        chunks = new Chunk[width, length];
+        Chunks = new Chunk[width, length];
     }
 
     void Start()
@@ -76,9 +73,9 @@ public class MapGenerator : MonoBehaviour
     public void Gen()
     {
         DestroyChunks();
-        NoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
-        ForestNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
-        RockNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        NoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
+        ForestNoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
+        RockNoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
 
         Content = GameObject.Instantiate(new GameObject(), transform).transform;
         Content.name = "Map";
@@ -93,17 +90,17 @@ public class MapGenerator : MonoBehaviour
                 else
                     chunkObj = GameObject.Instantiate(chunkPref, transform);
 
-                chunkObj.transform.position = new Vector3(x * (chunkWidth), 0, z * (chunkLength));
+                chunkObj.transform.position = new Vector3(x * (ChunkWidth), 0, z * (ChunkLength));
                 Chunk chunk = chunkObj.GetComponent<Chunk>();
-                chunks[x, z] = chunk;
-                chunk.Set(chunkWidth, chunkHeight, chunkLength, x, z, this);
+                Chunks[x, z] = chunk;
+                chunk.Set(ChunkWidth, ChunkHeight, ChunkLength, x, z, this);
             }
         }
         InitMeshes();
     }
     public void InitMeshes()
     {
-        foreach (var item in chunks)
+        foreach (var item in Chunks)
         {
             item.InitMeshes();
         }
@@ -117,29 +114,29 @@ public class MapGenerator : MonoBehaviour
 
     public void GenImage()
     {
-        NoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
-        ForestNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
-        RockNoiseMap.GenNoiseMap(width * chunkWidth, length * chunkLength);
+        NoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
+        ForestNoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
+        RockNoiseMap.GenNoiseMap(width * ChunkWidth, length * ChunkLength);
 
-        Texture2D tex = new Texture2D(width * chunkWidth, length * chunkLength);
-        Color[] colourMap = new Color[(width * chunkWidth) * (length * chunkLength)];
+        Texture2D tex = new Texture2D(width * ChunkWidth, length * ChunkLength);
+        Color[] colourMap = new Color[(width * ChunkWidth) * (length * ChunkLength)];
 
         for (int z = 0; z < tex.height; z++)
         {
             for (int x = 0; x < tex.width; x++)
             {
                 if (Noise[x, z] < MinNoise)
-                    colourMap[z * width * chunkWidth + x] = Color.black;
+                    colourMap[z * width * ChunkWidth + x] = Color.black;
                 else
                 {
-                    colourMap[z * width * chunkWidth + x] = Color.Lerp(new Color(0.5f, 1, 0.5f), new Color(0.4f, 0.9f, 0.4f), Noise[x, z]);
+                    colourMap[z * width * ChunkWidth + x] = Color.Lerp(new Color(0.5f, 1, 0.5f), new Color(0.4f, 0.9f, 0.4f), Noise[x, z]);
                     if(ForestNoise[x, z] >= MinForestNoise)
                     {
-                        colourMap[z * width * chunkWidth + x] = new Color(0.1f, 0.6f, 0.1f);
+                        colourMap[z * width * ChunkWidth + x] = new Color(0.1f, 0.6f, 0.1f);
                     }
                     else if (RockNoise[x, z] >= MinRockNoise)
                     {
-                        colourMap[z * width * chunkWidth + x] = Color.red;
+                        colourMap[z * width * ChunkWidth + x] = Color.red;
                     }
                 }
             }
@@ -152,37 +149,37 @@ public class MapGenerator : MonoBehaviour
 
     public float[,] GetNoiseChunk(int xPos, int zPos)
     {
-        return NoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
+        return NoiseMap.GetNoiseChunk(xPos, zPos, ChunkWidth, ChunkLength);
     }
     public float[,] GetForestNoiseChunk(int xPos, int zPos)
     {
-        return ForestNoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
+        return ForestNoiseMap.GetNoiseChunk(xPos, zPos, ChunkWidth, ChunkLength);
     }
     public float[,] GetRockNoiseChunk(int xPos, int zPos)
     {
-        return RockNoiseMap.GetNoiseChunk(xPos, zPos, chunkWidth, chunkLength);
+        return RockNoiseMap.GetNoiseChunk(xPos, zPos, ChunkWidth, ChunkLength);
     }
 
     public Chunk GetChunk(int x, int z)
     {
         if (!MathT.IntBetween(x, 0, width) || !MathT.IntBetween(z, 0, length)) return null;
 
-        return chunks[x, z];
+        return Chunks[x, z];
     }
     public Chunk GetChunkByWorld(int x, int z)
     {
-        int chunkX = Mathf.CeilToInt(x / chunkWidth);
-        int chunkZ = Mathf.CeilToInt(z / chunkLength);
+        int chunkX = Mathf.CeilToInt(x / ChunkWidth);
+        int chunkZ = Mathf.CeilToInt(z / ChunkLength);
 
         return GetChunk(chunkX, chunkZ);
     }
 
     public InteractObject GetInteractObjectByWorld(int x, int y, int z)
     {
-        int chunkX = Mathf.CeilToInt(x / chunkWidth);
-        int chunkZ = Mathf.CeilToInt(z / chunkLength);
-        int posx = x % chunkWidth;
-        int posz = z % chunkLength;
+        int chunkX = Mathf.CeilToInt(x / ChunkWidth);
+        int chunkZ = Mathf.CeilToInt(z / ChunkLength);
+        int posx = x % ChunkWidth;
+        int posz = z % ChunkLength;
 
         Chunk c = GetChunk(chunkX, chunkZ);
 

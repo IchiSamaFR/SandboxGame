@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1027857152070082956}
   m_Layer: 0
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,6 @@ MonoBehaviour:
   RessourceToGive:
     Type: 0
     Amount: 10
-  MaxRessourceAmount: 0
 --- !u!1001 &1027857151056904801
 PrefabInstance:
   m_ObjectHideFlags: 0

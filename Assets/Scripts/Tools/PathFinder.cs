@@ -108,9 +108,9 @@ public static class PathFinder
             }
         }
     }
-    public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.chunkWidth; }
-    public static int Height { get => MapGenerator.instance.chunkHeight;  }
-    public static int Length { get => MapGenerator.instance.length * MapGenerator.instance.chunkLength; }
+    public static int Width { get => MapGenerator.instance.width * MapGenerator.instance.ChunkWidth; }
+    public static int Height { get => MapGenerator.instance.ChunkHeight;  }
+    public static int Length { get => MapGenerator.instance.length * MapGenerator.instance.ChunkLength; }
 
     public static List<Vector3> GetPath(Vector3 start, Vector3 end)
     {

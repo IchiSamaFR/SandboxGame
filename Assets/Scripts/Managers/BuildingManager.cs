@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
-    BuildingCollection buildingCollection;
+    private BuildingCollection BuildingCollection;
     public static BuildingManager Instance;
-    GameObject Preview;
+    private GameObject Preview;
 
     private string ToBuild = "firecamp";
     public List<InteractObject> OrderList = new List<InteractObject>();
@@ -19,7 +19,7 @@ public class BuildingManager : MonoBehaviour
 
     private void Start()
     {
-        buildingCollection = BuildingCollection.Instance;
+        BuildingCollection = BuildingCollection.Instance;
     }
 
     private void Update()
@@ -64,7 +64,7 @@ public class BuildingManager : MonoBehaviour
     {
         if (!Preview)
         {
-            Preview = Instantiate(buildingCollection.GetBuild(ToBuild).Prefab, transform);
+            Preview = Instantiate(BuildingCollection.GetBuild(ToBuild).Prefab, transform);
             if (Preview.GetComponent<Collider>())
                 Preview.GetComponent<Collider>().enabled = false;
             Preview.name = "PreviewPlacement";

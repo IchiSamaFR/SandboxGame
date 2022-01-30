@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1027857152070082956}
   m_Layer: 0
-  m_Name: model
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
     Type: 1
     Amount: 0
   MaxAmountStacked: 4
-  modelContainer: {fileID: 1027857152070082956}
+  ModelContainer: {fileID: 1027857152070082956}
 --- !u!1 &4716844224047056807
 GameObject:
   m_ObjectHideFlags: 0

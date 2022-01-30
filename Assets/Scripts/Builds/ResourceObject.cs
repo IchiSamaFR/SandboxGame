@@ -6,7 +6,7 @@ public class ResourceObject : InteractObject
 {
     [Header("Ressource Field")]
     [SerializeField]
-    ResourcesCollection.Resource RessourceToGive = new ResourcesCollection.Resource();
+    private ResourcesCollection.Resource RessourceToGive = new ResourcesCollection.Resource();
 
     public void HarvestHit(int hitAmount = 1, bool returnRessources = false)
     {

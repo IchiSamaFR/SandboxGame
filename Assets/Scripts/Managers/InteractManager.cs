@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractManager : MonoBehaviour
 {
-    Character CharacterSelected;
+    private Character CharacterSelected;
 
 
     void Update()

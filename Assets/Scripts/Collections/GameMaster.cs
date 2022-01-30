@@ -6,9 +6,9 @@ public class GameMaster : MonoBehaviour
 {
     void Start()
     {
-        Vector3 newPos = new Vector3(MapGenerator.instance.width * MapGenerator.instance.chunkWidth / 2, 
+        Vector3 newPos = new Vector3(MapGenerator.instance.width * MapGenerator.instance.ChunkWidth / 2, 
                                      0,
-                                     MapGenerator.instance.length * MapGenerator.instance.chunkLength / 2);
+                                     MapGenerator.instance.length * MapGenerator.instance.ChunkLength / 2);
         PlayerManager.instance.transform.position = newPos;
     }
 
