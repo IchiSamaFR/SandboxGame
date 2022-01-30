@@ -49,7 +49,7 @@ public class InteractObject : MonoBehaviour
     public virtual void GetDamage(int amount = 1)
     {
         HealthPoints -= amount;
-        if(HealthPoints <= 0)
+        if (HealthPoints <= 0)
         {
             Destroy();
         }

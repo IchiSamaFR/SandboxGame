@@ -111,7 +111,7 @@ public class Character : MonoBehaviour
 
         if (interact.GetComponent<ResourceObject>() != null)
         {
-            interact.GetComponent<ResourceObject>().HarvestHit();
+            interact.GetComponent<ResourceObject>().HarvestHit(4);
             InteractObject interactAround = interact.GetWalkableAround(transform.position);
             if (!interactAround) return;
             posToGo = interactAround.transform.position;

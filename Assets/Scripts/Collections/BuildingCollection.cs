@@ -27,7 +27,7 @@ public class BuildingCollection : MonoBehaviour
         {
             if (Builds[i].Name == id)
             {
-                return Builds[i].Prefab.GetComponent<MeshRenderer>().material.color;
+                return Builds[i].Prefab.GetComponent<MeshRenderer>().sharedMaterial.color;
             }
         }
         return new Color();

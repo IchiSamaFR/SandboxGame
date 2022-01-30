@@ -8,38 +8,65 @@ public class ResourceObject : InteractObject
     [SerializeField]
     ResourcesCollection.Resource RessourceToGive = new ResourcesCollection.Resource();
 
-    public void HarvestHit()
+    public void HarvestHit(int hitAmount = 1, bool returnRessources = false)
     {
-        ResourcesCollection.Resource toGive = RessourceToGive.Clone();
-        toGive.Amount = 1;
+        ResourcesCollection.Resource toDrop = RessourceToGive.Clone();
+        toDrop.Amount = toDrop.Amount >= hitAmount ? hitAmount : toDrop.Amount;
+        if (!returnRessources)
+        {
+            DropRessource(toDrop);
+        }
+        else if (returnRessources)
+        {
 
+        }
+    }
+    private void DropRessource(ResourcesCollection.Resource toDrop)
+    {
         WorldDroppedRessource worldRess;
-        InteractObject posRes = null;
+        List<InteractObject> posRes = new List<InteractObject>();
         bool findPos = false;
         foreach (var item in GetAroundInteract())
         {
             worldRess = item.GetComponent<WorldDroppedRessource>();
             if (worldRess != null)
             {
-                if (worldRess.AddRessource(toGive) == null)
+                int toDmg = toDrop.Amount;
+                toDrop = worldRess.AddRessource(toDrop);
+                toDmg = toDrop == null ? toDmg : toDmg - toDrop.Amount;
+                GetDamage(toDmg);
+                if (toDrop == null)
                 {
-                    GetDamage();
                     return;
                 }
             }
             else if (item.BuildOn())
             {
-                posRes = item;
+                posRes.Add(item);
                 findPos = true;
             }
         }
 
         if (findPos)
         {
-            InteractObject worldRessource = posRes.ParentChunk.AddInteractObject(posRes.PosX, posRes.PosY + 1, posRes.PosZ, "wood");
-            worldRessource.GetComponent<WorldDroppedRessource>().AddRessource(toGive);
-            GetDamage();
-            return;
+            foreach (var item in posRes)
+            {
+                if (toDrop == null || toDrop.Amount == 0) return;
+                int toDmg = toDrop.Amount;
+                InteractObject worldRessource = item.ParentChunk.AddInteractObject(item.PosX, item.PosY + 1, item.PosZ, toDrop.Type.ToString());
+                toDrop = worldRessource.GetComponent<WorldDroppedRessource>().AddRessource(toDrop);
+                toDmg = toDrop == null ? toDmg : toDmg - toDrop.Amount;
+                GetDamage(toDmg);
+            }
+        }
+    }
+    public override void GetDamage(int amount = 1)
+    {
+        HealthPoints -= amount;
+        RessourceToGive.Amount -= amount;
+        if (HealthPoints <= 0 || RessourceToGive.Amount <= 0)
+        {
+            Destroy();
         }
     }
 }
